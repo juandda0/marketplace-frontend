@@ -1,51 +1,59 @@
-import type { Product } from '../types';
-import galletaImg from '../../../assets/mocks/mockGalleta.jpg'
-import stikersImg from '../../../assets/mocks/stikerMock.jpg'
-import arepaImg from '../../../assets/mocks/arepamock.jpg'
-import camisaImg from '../../../assets/mocks/camsiaMock.png'
-import salchipapaImg from '../../../assets/mocks/salchipapaMock.jpg'
+import type { Category, Product, ProductFilters } from '../types';
+import { categories, products } from '../../../mocks/catalog';
+import { delay } from '../../../lib/mockDb';
 
-// Tus datos de ejemplo
-const mockProducts: Product[] = [
-    { id: 1, name: 'Gallenitas de chocolate', price: 3000, originalPrice: 5000, imageUrl: galletaImg, shippingFree: true, stock: 15, category: "Postres", storeName: "Galletas La Cucharita", rating: 4, reviewCount: 8, description: "Deliciosas galletas caseras con chips de chocolate.", reviews: [] },
-    { id: 2, name: 'Stickers de Sukuna', price: 1000, imageUrl: stikersImg, shippingFree: true, stock: 50, category: "Accesorios", storeName: "Anime Fans Store", rating: 5, reviewCount: 22, description: "Stickers de alta calidad del rey de las maldiciones, Sukuna.", reviews: [] },
-    { id: 3, name: 'Camiseta estampada', price: 15000, originalPrice: 20000, imageUrl: camisaImg, shippingFree: true, stock: 20, category: "Ropa", storeName: "Urban Style", rating: 4, reviewCount: 12, description: "Camiseta de algodón con estampado único.", reviews: [] },
-    { id: 4, name: 'Arepa rellena', price: 15000, imageUrl: arepaImg, shippingFree: false, stock: 30, category: "Comida", storeName: "El Arepazo", rating: 5, reviewCount: 45, description: "La mejor arepa rellena de la universidad, con todo.", reviews: [] },
-    { id: 5, name: 'Salchipapa', price: 5000, imageUrl: salchipapaImg, shippingFree: false, stock: 25, category: "Comida", storeName: "El Arepazo", rating: 4, reviewCount: 30, description: "Porción personal de salchipapa con queso y salsas.", reviews: [] },
-];
+const normalize = (text: string) =>
+    text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '');
 
-// Función para obtener todos los productos (sin cambios)
-export const getProducts = (): Promise<Product[]> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(mockProducts);
-        }, 500);
+export const getCategories = (): Promise<Category[]> => delay(categories, 120);
+
+export const filterProducts = (list: Product[], filters: ProductFilters = {}): Product[] => {
+    const query = normalize(filters.query?.trim() ?? '');
+    let result = list.filter((p) => {
+        if (filters.category && p.category !== filters.category) return false;
+        if (filters.storeId && p.storeId !== filters.storeId) return false;
+        if (!query) return true;
+        const haystack = normalize(`${p.name} ${p.storeName} ${p.description} ${p.category}`);
+        return query.split(/\s+/).every((word) => haystack.includes(word));
     });
+
+    switch (filters.sort) {
+        case 'precio-asc':
+            result = [...result].sort((a, b) => a.price - b.price);
+            break;
+        case 'precio-desc':
+            result = [...result].sort((a, b) => b.price - a.price);
+            break;
+        case 'calificacion':
+            result = [...result].sort((a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount);
+            break;
+        default:
+            break;
+    }
+    return result;
 };
 
-// Función para obtener un producto por ID (ACTUALIZADA)
-export const getProductById = (id: number): Promise<Product | undefined> => {
-    return new Promise((resolve) => {
-        // 1. Busca el producto en tu arreglo de mocks
-        const foundProduct = mockProducts.find(p => p.id === id);
+export const getProducts = (filters?: ProductFilters): Promise<Product[]> => delay(filterProducts(products, filters));
 
-        if (foundProduct) {
-             // 2. Si lo encuentra, le añade detalles adicionales para la página de detalle
-            const detailedProduct = {
-                ...foundProduct,
-                images: [
-                    foundProduct.imageUrl,
-                    'https://via.placeholder.com/600x600/343a40/FFFFFF?text=Vista+2',
-                    'https://via.placeholder.com/600x600/343a40/FFFFFF?text=Vista+3',
-                ],
-                reviews: [
-                    { id: 1, author: 'Juan D.', rating: 5, comment: '¡Excelente producto, recomendado!', date: '10 de Ago, 2025' },
-                    { id: 2, author: 'Maria P.', rating: 4, comment: 'Muy bueno, llegó rápido.', date: '09 de Ago, 2025' },
-                ],
-            };
-            resolve(detailedProduct);
-        } else {
-            resolve(undefined); // No se encontró el producto
-        }
-    });
+export const getFeaturedProducts = (): Promise<Product[]> => delay(products.filter((p) => p.featured));
+
+export const getProductById = (id: number): Promise<Product | undefined> => {
+    const found = products.find((p) => p.id === id);
+    if (!found) return delay(undefined);
+    // Las fotos reales se muestran solas; los productos sin foto usan variaciones del arte generado.
+    return delay({ ...found, images: found.imageUrl ? [found.imageUrl] : [] });
+};
+
+export const getProductsByStore = (storeId: string): Promise<Product[]> =>
+    delay(products.filter((p) => p.storeId === storeId));
+
+export const getRelatedProducts = (product: Product, limit = 6): Promise<Product[]> => {
+    const sameStore = products.filter((p) => p.storeId === product.storeId && p.id !== product.id);
+    const sameCategory = products.filter(
+        (p) => p.category === product.category && p.id !== product.id && p.storeId !== product.storeId,
+    );
+    return delay([...sameStore, ...sameCategory].slice(0, limit));
 };
