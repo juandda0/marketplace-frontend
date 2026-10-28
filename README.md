@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# Unimarket · Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketplace universitario para estudiantes de la **Universidad de Córdoba** (Montería, Colombia): catálogos de emprendimientos estudiantiles, **subastas**, **rifas** y una moneda digital propia, **UNICOIN**. Proyecto ganador de **TechU Montería 2025**.
 
-Currently, two official plugins are available:
+Esta app funciona **100 % sin backend** (modo demo): los servicios responden con datos locales y lo que hace el usuario (pujas, boletos, recargas, pedidos) se guarda en `localStorage`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## Expanding the ESLint configuration
+React 19 · TypeScript · Vite 7 · Tailwind CSS 3 · React Router 7 · react-icons (Phosphor) · axios
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Ejecutar
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm ci
+npm run dev      # http://localhost:5173
+npm run build
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Para entrar usa **«Entrar como demo»** en la pantalla de inicio de sesión (cuenta de Sofía Martínez, `demo@correo.unicordoba.edu.co`). También funciona cualquier correo válido con una contraseña de 6+ caracteres, o crear una cuenta en `/registro` (incluye 500 UNICOIN de bienvenida).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Desde **Perfil → Restablecer datos de demostración** se borra todo lo generado localmente.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Pantallas
+
+| Ruta | Pantalla |
+| --- | --- |
+| `/login`, `/registro` | Inicio de sesión (con acceso demo) y registro |
+| `/` | Inicio: búsqueda, categorías, subastas en vivo, destacados, rifas y tiendas |
+| `/catalogo` | Catálogo con búsqueda, filtros por categoría y orden (`?q=`, `?categoria=`, `?orden=`) |
+| `/productos/:id` | Detalle de producto: galería, entrega, tienda, opiniones y relacionados |
+| `/tiendas/:id` | Tienda del vendedor |
+| `/subastas`, `/subastas/:id` | Subastas con cuenta regresiva, historial y pujas en UNICOIN |
+| `/rifas`, `/rifas/:id` | Rifas con grilla de números y compra de boletos con UNICOIN |
+| `/billetera`, `/billetera/recargar` | Saldo, movimientos y recarga de UNICOIN |
+| `/carrito`, `/checkout`, `/pedidos/:id` | Carrito, pago (UNICOIN, Nequi o efectivo) y seguimiento del pedido |
+| `/perfil` | Perfil, pedidos, pujas, boletos y tema claro/oscuro |
+
+## Estructura
+
 ```
+src/
+  core/        # layout, navegación, UI compartida, tema, toasts, hooks y utilidades
+  lib/         # cliente axios, configuración y base de datos local del modo demo
+  mocks/       # datos de ejemplo (tiendas, productos, subastas, rifas, usuarios)
+  modules/     # auth, marketplace, auctions, raffles, wallet, cart, profile
+                 (cada uno con pages/components/services/types/routes)
+```
+
+## Conectar el backend
+
+El cliente de `src/lib/axios.ts` apunta al backend en Spring Boot. Con `VITE_USE_MOCKS=false` y `VITE_API_URL` en `.env.local`, el login y el registro llaman a `/api/v1/auth/*`; la integración completa (perfil, catálogo, subastas, rifas y billetera) está pendiente y hoy esos servicios responden con datos locales.
