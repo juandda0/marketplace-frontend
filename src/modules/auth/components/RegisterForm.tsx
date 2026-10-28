@@ -1,48 +1,123 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/authService';
+import { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { loginUser, registerUser } from '../services/authService';
+import { errorMessage } from '../../../lib/mockDb';
+import { campuses, programs, WELCOME_BONUS } from '../../../mocks/users';
 import type { RegisterRequest } from '../types';
+import AuthLayout from './AuthLayout';
+import Button from '../../../core/ui/Button';
+import { UnicoinIcon } from '../../../core/ui/Unicoin';
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
     const [formData, setFormData] = useState<RegisterRequest>({
-        name: '', lastName: '', email: '', password: '', studentId: '', campusId: 1
+        name: '',
+        lastName: '',
+        email: '',
+        password: '',
+        studentId: '',
+        campusId: 1,
+        program: programs[0],
     });
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: name === 'campusId' ? parseInt(value, 10) : value }));
+        setFormData((prev) => ({ ...prev, [name]: name === 'campusId' ? parseInt(value, 10) : value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
+        if (!formData.name.trim() || !formData.lastName.trim()) {
+            setError('Escribe tu nombre y apellido.');
+            return;
+        }
+        setLoading(true);
         try {
             await registerUser(formData);
-            navigate('/login');
+            const session = await loginUser({ email: formData.email, password: formData.password });
+            login(session.access_token);
+            navigate('/', { replace: true });
         } catch (err) {
-            setError('Error al registrar. Verifica tus datos.');
+            setError(errorMessage(err, 'Error al registrar. Verifica tus datos.'));
+            setLoading(false);
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-center">Crear Cuenta</h2>
-                {/* ...el resto del JSX es igual... */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input type="text" name="name" placeholder="Nombre" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-                    <input type="text" name="lastName" placeholder="Apellido" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-                    <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-                    <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-                    <input type="text" name="studentId" placeholder="ID Estudiante" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-                    <button type="submit" className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                        Registrarse
-                    </button>
-                </form>
+        <AuthLayout title="Crea tu cuenta" subtitle="Únete a la comunidad de compra y venta de la Universidad de Córdoba.">
+            <div className="mb-5 flex items-center gap-3 rounded-2xl border border-coin/25 bg-coin/10 p-3 text-[13px]">
+                <UnicoinIcon className="h-8 w-8" />
+                <p className="text-muted">
+                    Recibe <span className="font-semibold text-coin">{WELCOME_BONUS} UNICOIN</span> de bienvenida al registrarte.
+                </p>
             </div>
-        </div>
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <div className="grid grid-cols-2 gap-3">
+                    <label className="block">
+                        <span className="label">Nombre</span>
+                        <input type="text" name="name" autoComplete="given-name" value={formData.name} onChange={handleChange} required className="input" placeholder="Valentina" />
+                    </label>
+                    <label className="block">
+                        <span className="label">Apellido</span>
+                        <input type="text" name="lastName" autoComplete="family-name" value={formData.lastName} onChange={handleChange} required className="input" placeholder="Ruiz" />
+                    </label>
+                </div>
+                <label className="block">
+                    <span className="label">Correo institucional</span>
+                    <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} required className="input" placeholder="vruiz@correo.unicordoba.edu.co" />
+                </label>
+                <label className="block">
+                    <span className="label">Contraseña</span>
+                    <input type="password" name="password" autoComplete="new-password" value={formData.password} onChange={handleChange} required className="input" placeholder="Mínimo 6 caracteres" />
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                    <label className="block">
+                        <span className="label">Código estudiantil</span>
+                        <input type="text" name="studentId" inputMode="numeric" value={formData.studentId} onChange={handleChange} required className="input" placeholder="1067…" />
+                    </label>
+                    <label className="block">
+                        <span className="label">Sede</span>
+                        <select name="campusId" value={formData.campusId} onChange={handleChange} className="input appearance-none">
+                            {campuses.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+                <label className="block">
+                    <span className="label">Programa</span>
+                    <select name="program" value={formData.program} onChange={handleChange} className="input appearance-none">
+                        {programs.map((p) => (
+                            <option key={p}>{p}</option>
+                        ))}
+                    </select>
+                </label>
+
+                {error && (
+                    <p className="rounded-xl border border-danger/30 bg-danger/10 px-3.5 py-2.5 text-[13px] text-danger" role="alert">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" size="lg" block loading={loading}>
+                    Crear cuenta
+                </Button>
+            </form>
+            <p className="mt-8 text-center text-[14px] text-muted">
+                ¿Ya tienes cuenta?{' '}
+                <Link to="/login" className="font-semibold text-primary hover:underline">
+                    Inicia sesión
+                </Link>
+            </p>
+        </AuthLayout>
     );
 };
 
