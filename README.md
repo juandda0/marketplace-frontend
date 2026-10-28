@@ -8,6 +8,8 @@ Esta app funciona **100 % sin backend** (modo demo): los servicios responden con
 
 React 19 · TypeScript · Vite 7 · Tailwind CSS 3 · React Router 7 · react-icons (Phosphor) · axios
 
+Diseño: azul como color principal, solo colores sólidos (sin degradados ni transparencias), tema oscuro por defecto y claro opcional. Los tokens están en `src/index.css`.
+
 ## Ejecutar
 
 ```bash
@@ -46,6 +48,16 @@ src/
   modules/     # auth, marketplace, auctions, raffles, wallet, cart, profile
                  (cada uno con pages/components/services/types/routes)
 ```
+
+## Íconos ilustrados
+
+Las categorías, los productos sin foto y las ilustraciones usan **Fluent Emoji Flat** (© Microsoft Corporation, licencia MIT, https://github.com/microsoft/fluentui-emoji). Solo se incluyen los SVG que usa la app, extraídos con:
+
+```bash
+node scripts/extract-icons.mjs   # escribe src/assets/icons/*.svg y src/core/ui/emojiIcons.ts
+```
+
+Para agregar un ícono, añade su nombre a la lista `ICONS` del script y vuelve a ejecutarlo.
 
 ## Conectar el backend
 
