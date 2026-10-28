@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Design tokens (RGB channels so Tailwind opacity modifiers work).
+ * Dark is the default theme; light is opt-in via [data-theme="light"].
+ */
+@layer base {
+  :root,
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --bg: 8 11 10;
+    --surface: 16 21 19;
+    --surface-2: 24 31 28;
+    --surface-3: 34 43 39;
+    --line: 39 49 45;
+    --fg: 236 242 238;
+    --muted: 163 176 170;
+    --subtle: 122 137 130;
+    --primary: 62 214 140;
+    --primary-strong: 34 184 112;
+    --primary-fg: 3 22 13;
+    --coin: 246 188 66;
+    --coin-fg: 38 24 0;
+    --auction: 255 128 92;
+    --raffle: 172 146 255;
+    --danger: 248 113 113;
+    --success: 62 214 140;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light;
+    --bg: 245 247 246;
+    --surface: 255 255 255;
+    --surface-2: 239 243 241;
+    --surface-3: 228 234 231;
+    --line: 220 227 223;
+    --fg: 13 20 17;
+    --muted: 72 86 80;
+    --subtle: 102 116 110;
+    --primary: 8 138 80;
+    --primary-strong: 6 112 65;
+    --primary-fg: 255 255 255;
+    --coin: 176 116 6;
+    --coin-fg: 255 255 255;
+    --auction: 214 74 40;
+    --raffle: 112 80 224;
+    --danger: 205 45 45;
+    --success: 8 138 80;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+  }
+
+  ::selection {
+    background: rgb(var(--primary) / 0.3);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary));
+    outline-offset: 2px;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line/70 bg-surface shadow-card;
+  }
+
+  .input {
+    @apply h-12 w-full rounded-xl border border-line bg-surface-2 px-4 text-[15px] text-fg transition-colors placeholder:text-subtle focus:border-primary/70 focus:outline-none focus:ring-4 focus:ring-primary/15;
+  }
+
+  .label {
+    @apply mb-1.5 block text-[13px] font-medium text-muted;
+  }
+
+  .chip {
+    @apply inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-3.5 text-[13px] font-medium text-muted transition-colors hover:text-fg;
+  }
+
+  .chip-active {
+    @apply border-primary/50 bg-primary/15 text-primary hover:text-primary;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--surface-2)) 0%,
+      rgb(var(--surface-3)) 50%,
+      rgb(var(--surface-2)) 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-xl;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
