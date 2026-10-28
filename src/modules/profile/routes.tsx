@@ -1,9 +1,11 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import ProfilePage from './components/ProfilePage';
+import { Navigate, Route } from 'react-router-dom';
+import ProfilePage from './pages/ProfilePage';
 
 const ProfileRoutes = (
-    <Route path="/profile" element={<ProfilePage />} />
+    <>
+        <Route path="/perfil" element={<ProfilePage />} />
+        <Route path="/profile" element={<Navigate to="/perfil" replace />} />
+    </>
 );
 
 export default ProfileRoutes;

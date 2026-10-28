@@ -1,83 +1,87 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../modules/auth/context/AuthContext';
-// Importa un ícono de perfil, por ejemplo de 'react-icons' (npm install react-icons)
-import { FaUserCircle, FaStore, FaCog, FaSignOutAlt, FaHistory, FaShoppingCart, FaStar, FaPlusCircle } from 'react-icons/fa';
+import { PiMoon, PiReceipt, PiSignOut, PiStorefront, PiSun, PiUserCircle, PiWallet } from 'react-icons/pi';
+import { useAuth } from '../../modules/auth/hooks/useAuth';
+import { useTheme } from '../theme/useTheme';
+import Avatar from '../ui/Avatar';
 
-const ProfileDropdown: React.FC = () => {
+/** Menú de cuenta para escritorio. */
+const ProfileDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const authContext = useContext(AuthContext);
+    const { user, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const handleLogout = () => {
-        authContext?.logout();
-        navigate('/login');
-    };
-
-    // Hook para cerrar el dropdown si se hace clic fuera
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) setIsOpen(false);
         };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    if (!user) return null;
+    const fullName = `${user.name} ${user.lastName}`.trim();
 
-    if (!authContext?.isAuthenticated) return null;
-
-    const renderRoleSpecificItems = () => {
-        switch (authContext.userRole) {
-            case 'CLIENT':
-                return (
-                    <Link to="/become-seller" className="block w-full text-left px-4 py-3 text-sm text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition duration-300 rounded-md shadow-lg flex items-center gap-3">
-                        <FaPlusCircle />
-                        ¡Quiero Vender!
-                    </Link>
-                );
-            case 'ENTREPRENEUR':
-                return (
-                     <Link to="/my-store" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaStore /> Mi Tienda</Link>
-                );
-            case 'UNIVERSITY_ADMIN':
-            case 'SUPER_ADMIN':
-                return (
-                    <Link to="/admin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaCog /> Panel de Admin</Link>
-                );
-            default:
-                return null;
-        }
-    }
+    const item = 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted transition hover:bg-surface-2 hover:text-fg';
 
     return (
         <div className="relative" ref={dropdownRef}>
-            <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-                <FaUserCircle className="w-8 h-8 text-white hover:text-blue-200 transition" />
+            <button
+                onClick={() => setIsOpen((o) => !o)}
+                className="flex items-center rounded-full transition hover:opacity-90"
+                aria-haspopup="menu"
+                aria-expanded={isOpen}
+                aria-label="Abrir menú de cuenta"
+            >
+                <Avatar name={fullName} size="sm" />
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-20 origin-top-right ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
-                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaUserCircle /> Ver Perfil</Link>
-                        <Link to="/my-purchases" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaShoppingCart /> Mis Compras</Link>
-                        <Link to="/history" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaHistory /> Historial</Link>
-                        <Link to="/reviews" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-3"><FaStar /> Opiniones</Link>
-                        
-                        <div className="border-t my-1"></div>
-                        
-                        <div className="px-1 py-1">
-                            {renderRoleSpecificItems()}
+                <div
+                    role="menu"
+                    className="absolute right-0 z-50 mt-3 w-64 animate-fade-up rounded-2xl border border-line bg-surface p-2 shadow-float"
+                    onClick={() => setIsOpen(false)}
+                >
+                    <div className="flex items-center gap-3 px-3 py-2.5">
+                        <Avatar name={fullName} size="md" />
+                        <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-fg">{fullName}</p>
+                            <p className="truncate text-xs text-subtle">{user.email}</p>
                         </div>
-                        
-                        <div className="border-t my-1"></div>
-
-                        <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-3">
-                           <FaSignOutAlt /> Cerrar Sesión
-                        </button>
                     </div>
+                    <div className="my-1 h-px bg-line" />
+                    <Link to="/perfil" className={item} role="menuitem">
+                        <PiUserCircle className="h-5 w-5" aria-hidden /> Mi perfil
+                    </Link>
+                    <Link to="/billetera" className={item} role="menuitem">
+                        <PiWallet className="h-5 w-5" aria-hidden /> Billetera UNICOIN
+                    </Link>
+                    <Link to="/perfil#pedidos" className={item} role="menuitem">
+                        <PiReceipt className="h-5 w-5" aria-hidden /> Mis pedidos
+                    </Link>
+                    {user.storeId && (
+                        <Link to={`/tiendas/${user.storeId}`} className={item} role="menuitem">
+                            <PiStorefront className="h-5 w-5" aria-hidden /> Mi tienda
+                        </Link>
+                    )}
+                    <button type="button" onClick={toggleTheme} className={`${item} w-full`} role="menuitem">
+                        {theme === 'dark' ? <PiSun className="h-5 w-5" aria-hidden /> : <PiMoon className="h-5 w-5" aria-hidden />}
+                        {theme === 'dark' ? 'Tema claro' : 'Tema oscuro'}
+                    </button>
+                    <div className="my-1 h-px bg-line" />
+                    <button
+                        type="button"
+                        onClick={() => {
+                            logout();
+                            navigate('/login');
+                        }}
+                        className={`${item} w-full text-danger hover:text-danger`}
+                        role="menuitem"
+                    >
+                        <PiSignOut className="h-5 w-5" aria-hidden /> Cerrar sesión
+                    </button>
                 </div>
             )}
         </div>

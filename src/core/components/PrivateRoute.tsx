@@ -1,16 +1,11 @@
-import React, { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { AuthContext } from '../../modules/auth/context/AuthContext';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../../modules/auth/hooks/useAuth';
 
-const PrivateRoute: React.FC = () => {
-    const authContext = useContext(AuthContext);
-    
-    if (!authContext) {
-        // Esto puede pasar si el componente no está envuelto en el AuthProvider.
-        throw new Error("PrivateRoute must be used within an AuthProvider");
-    }
+const PrivateRoute = () => {
+    const { isAuthenticated } = useAuth();
+    const location = useLocation();
 
-    return authContext.isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace state={{ from: location.pathname }} />;
 };
 
 export default PrivateRoute;
