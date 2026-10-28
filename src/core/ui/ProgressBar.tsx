@@ -6,10 +6,10 @@ interface ProgressBarProps {
 }
 
 const tones = {
-    primary: 'from-primary/70 to-primary',
-    raffle: 'from-raffle/70 to-raffle',
-    coin: 'from-coin/70 to-coin',
-    auction: 'from-auction/70 to-auction',
+    primary: 'bg-primary',
+    raffle: 'bg-raffle',
+    coin: 'bg-coin',
+    auction: 'bg-auction',
 };
 
 const ProgressBar = ({ value, max, tone = 'primary', className = '' }: ProgressBarProps) => {
@@ -22,7 +22,7 @@ const ProgressBar = ({ value, max, tone = 'primary', className = '' }: ProgressB
             aria-valuemin={0}
             aria-valuemax={max}
         >
-            <div className={`h-full rounded-full bg-gradient-to-r ${tones[tone]} transition-[width] duration-500`} style={{ width: `${pct}%` }} />
+            <div className={`h-full rounded-full ${tones[tone]} transition-[width] duration-500`} style={{ width: `${pct}%` }} />
         </div>
     );
 };

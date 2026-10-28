@@ -1,10 +1,10 @@
-import { PiTicket, PiTicketFill } from 'react-icons/pi';
 import { useAsync } from '../../../core/hooks/useAsync';
 import { getRaffles } from '../services/raffleService';
 import { useCurrentUser } from '../../auth/hooks/useAuth';
 import RaffleCard from '../components/RaffleCard';
 import EmptyState from '../../../core/ui/EmptyState';
 import { Skeleton } from '../../../core/ui/Skeleton';
+import Emoji from '../../../core/ui/Emoji';
 
 const RafflesPage = () => {
     const user = useCurrentUser();
@@ -21,9 +21,9 @@ const RafflesPage = () => {
             </div>
 
             {myTickets > 0 && (
-                <div className="mb-5 flex items-center gap-3 rounded-2xl border border-raffle/30 bg-raffle/10 p-3.5">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-raffle/20 text-raffle">
-                        <PiTicketFill className="h-5 w-5" aria-hidden />
+                <div className="mb-5 flex items-center gap-3 rounded-2xl border border-raffle-line bg-raffle-soft p-3.5">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-raffle-soft text-raffle-ink">
+                        <Emoji name="ticket" className="h-6 w-6" />
                     </span>
                     <div className="text-[13px]">
                         <p className="font-semibold text-fg">Tienes {myTickets} {myTickets === 1 ? 'boleto activo' : 'boletos activos'}</p>
@@ -45,7 +45,7 @@ const RafflesPage = () => {
                     ))}
                 </div>
             ) : (
-                <EmptyState icon={<PiTicket aria-hidden />} title="No hay rifas activas" description="Vuelve pronto: cada semana hay nuevas." />
+                <EmptyState icon={<Emoji name="ticket" />} title="No hay rifas activas" description="Vuelve pronto: cada semana hay nuevas." />
             )}
         </div>
     );

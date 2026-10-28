@@ -10,9 +10,7 @@ import {
     PiMoon,
     PiSealCheckFill,
     PiSignOut,
-    PiStorefront,
     PiSun,
-    PiTrophyFill,
 } from 'react-icons/pi';
 import { useAuth, useCurrentUser } from '../../auth/hooks/useAuth';
 import { useTheme } from '../../../core/theme/useTheme';
@@ -27,6 +25,7 @@ import { resetDemoData } from '../../../lib/mockDb';
 import { StoreLogo } from '../../marketplace/components/StoreCard';
 import type { OrderStatus } from '../../cart/types';
 import Avatar from '../../../core/ui/Avatar';
+import Emoji from '../../../core/ui/Emoji';
 import Badge from '../../../core/ui/Badge';
 import Button from '../../../core/ui/Button';
 import ProductVisual from '../../../core/ui/ProductVisual';
@@ -70,15 +69,12 @@ const ProfilePage = () => {
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             {/* Encabezado */}
-            <section className="relative isolate overflow-hidden rounded-3xl border border-line/70 bg-surface p-5">
-                <div
-                    className="absolute inset-x-0 top-0 -z-10 h-24"
-                    style={{ background: 'linear-gradient(120deg, rgb(var(--primary) / 0.28), rgb(var(--coin) / 0.14) 60%, transparent)' }}
-                />
+            <section className="relative isolate overflow-hidden rounded-3xl border border-line bg-surface p-5">
+                <div className="absolute inset-x-0 top-0 -z-10 h-24 bg-primary" />
                 <Avatar name={fullName} size="xl" className="ring-4 ring-surface" />
                 <h1 className="mt-3 flex items-center gap-1.5 text-[22px] font-bold tracking-tight">
                     {fullName}
-                    {user.studentId && <PiSealCheckFill className="h-5 w-5 text-primary" aria-label="Estudiante verificado" />}
+                    {user.studentId && <PiSealCheckFill className="h-5 w-5 text-primary-ink" aria-label="Estudiante verificado" />}
                 </h1>
                 <p className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted">
                     <PiGraduationCap className="h-4 w-4" aria-hidden />
@@ -106,7 +102,7 @@ const ProfilePage = () => {
 
             {/* Tienda */}
             {store ? (
-                <Link to={`/tiendas/${store.id}`} className="card flex items-center gap-3 p-4 transition hover:border-line">
+                <Link to={`/tiendas/${store.id}`} className="card flex items-center gap-3 p-4 transition-colors hover:border-primary-line">
                     <StoreLogo store={store} />
                     <div className="min-w-0 flex-1">
                         <p className="text-[12px] font-medium text-subtle">Mi tienda</p>
@@ -119,8 +115,8 @@ const ProfilePage = () => {
                 </Link>
             ) : (
                 <section className="card flex items-center gap-3 p-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                        <PiStorefront className="h-6 w-6" aria-hidden />
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-soft">
+                        <Emoji name="convenience-store" className="h-8 w-8" />
                     </span>
                     <div className="min-w-0 flex-1">
                         <p className="text-[14px] font-semibold">¿Tienes un emprendimiento?</p>
@@ -143,13 +139,13 @@ const ProfilePage = () => {
                 {orders.loading ? (
                     <Skeleton className="h-36 w-full rounded-2xl" />
                 ) : orders.data?.length ? (
-                    <ul className="card divide-y divide-line/70">
+                    <ul className="card divide-y divide-line">
                         {orders.data.slice(0, 5).map((order) => {
                             const first = order.items[0];
                             const s = statusLabel[order.status];
                             return (
                                 <li key={order.id}>
-                                    <Link to={`/pedidos/${order.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2/60">
+                                    <Link to={`/pedidos/${order.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2">
                                         <ProductVisual visual={first.visual} imageUrl={first.imageUrl} imageFit={first.imageFit} alt={first.name} className="h-12 w-12 shrink-0 rounded-xl" />
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-[14px] font-medium">
@@ -181,10 +177,10 @@ const ProfilePage = () => {
             {bids.data && bids.data.length > 0 && (
                 <section>
                     <h2 className="mb-3 text-[17px] font-semibold tracking-tight">Mis pujas</h2>
-                    <ul className="card divide-y divide-line/70">
+                    <ul className="card divide-y divide-line">
                         {bids.data.map(({ auction, myBestBid, isLeading }) => (
                             <li key={auction.id}>
-                                <Link to={`/subastas/${auction.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2/60">
+                                <Link to={`/subastas/${auction.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2">
                                     <ProductVisual visual={auction.visual} alt={auction.title} className="h-12 w-12 shrink-0 rounded-xl" />
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-[14px] font-medium">{auction.title}</p>
@@ -208,10 +204,10 @@ const ProfilePage = () => {
             {tickets.data && tickets.data.length > 0 && (
                 <section>
                     <h2 className="mb-3 text-[17px] font-semibold tracking-tight">Mis boletos</h2>
-                    <ul className="card divide-y divide-line/70">
+                    <ul className="card divide-y divide-line">
                         {tickets.data.map((raffle) => (
                             <li key={raffle.id}>
-                                <Link to={`/rifas/${raffle.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2/60">
+                                <Link to={`/rifas/${raffle.id}`} className="flex items-center gap-3 p-3.5 transition hover:bg-surface-2">
                                     <ProductVisual visual={raffle.visual} alt={raffle.title} className="h-12 w-12 shrink-0 rounded-xl" />
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-[14px] font-medium">{raffle.title}</p>
@@ -219,7 +215,7 @@ const ProfilePage = () => {
                                     </div>
                                     <div className="flex max-w-[40%] flex-wrap justify-end gap-1">
                                         {raffle.myNumbers.slice(0, 4).map((n) => (
-                                            <span key={n} className="rounded-md bg-raffle/15 px-1.5 py-0.5 text-[11px] font-bold text-raffle tabular">
+                                            <span key={n} className="rounded-md bg-raffle-soft px-1.5 py-0.5 text-[11px] font-bold text-raffle-ink tabular">
                                                 {padTicket(n, raffle.totalTickets)}
                                             </span>
                                         ))}
@@ -234,7 +230,7 @@ const ProfilePage = () => {
             {/* Datos */}
             <section>
                 <h2 className="mb-3 text-[17px] font-semibold tracking-tight">Datos de la cuenta</h2>
-                <ul className="card divide-y divide-line/70 text-[14px]">
+                <ul className="card divide-y divide-line text-[14px]">
                     <li className="flex items-center gap-3 p-3.5">
                         <PiEnvelopeSimple className="h-5 w-5 text-subtle" aria-hidden />
                         <span className="min-w-0 flex-1 truncate">{user.email}</span>
@@ -268,7 +264,7 @@ const ProfilePage = () => {
                                     aria-checked={theme === value}
                                     onClick={() => setTheme(value)}
                                     className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition ${
-                                        theme === value ? 'bg-surface text-fg shadow-card' : 'text-subtle hover:text-fg'
+                                        theme === value ? 'bg-surface text-fg' : 'text-subtle hover:text-fg'
                                     }`}
                                 >
                                     {label}
@@ -289,7 +285,7 @@ const ProfilePage = () => {
             </div>
 
             <p className="flex items-center justify-center gap-1.5 pb-2 text-center text-xs text-subtle">
-                <PiTrophyFill className="h-3.5 w-3.5 text-coin" aria-hidden />
+                <Emoji name="trophy" className="h-4 w-4" />
                 Unimarket v1.0 · Ganador TechU Montería 2025
             </p>
         </div>

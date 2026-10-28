@@ -12,14 +12,14 @@ export const StoreLogo = ({ store, className = 'h-12 w-12 rounded-xl' }: { store
 const StoreCard = ({ store }: { store: Store }) => (
     <Link
         to={`/tiendas/${store.id}`}
-        className="card flex w-[248px] shrink-0 flex-col gap-3 p-3.5 transition hover:border-line md:w-auto"
+        className="card flex w-[248px] shrink-0 flex-col gap-3 p-3.5 transition-colors hover:border-primary-line md:w-auto"
     >
         <div className="flex items-center gap-3">
             <StoreLogo store={store} />
             <div className="min-w-0">
                 <p className="flex items-center gap-1 truncate text-[14px] font-semibold text-fg">
                     <span className="truncate">{store.name}</span>
-                    {store.verified && <PiSealCheckFill className="h-4 w-4 shrink-0 text-primary" aria-label="Tienda verificada" />}
+                    {store.verified && <PiSealCheckFill className="h-4 w-4 shrink-0 text-primary-ink" aria-label="Tienda verificada" />}
                 </p>
                 <p className="truncate text-xs text-subtle">{store.tagline}</p>
             </div>

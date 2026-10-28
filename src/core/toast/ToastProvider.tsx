@@ -10,8 +10,8 @@ interface ToastItem extends ToastOptions {
 }
 
 const toneIcon = {
-    success: <PiCheckCircleFill className="h-5 w-5 text-success" aria-hidden />,
-    error: <PiWarningCircleFill className="h-5 w-5 text-danger" aria-hidden />,
+    success: <PiCheckCircleFill className="h-5 w-5 text-success-ink" aria-hidden />,
+    error: <PiWarningCircleFill className="h-5 w-5 text-danger-ink" aria-hidden />,
     info: <PiInfoFill className="h-5 w-5 text-muted" aria-hidden />,
     coin: <UnicoinIcon className="h-5 w-5" />,
 };
@@ -37,7 +37,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                     <div
                         key={toast.id}
                         role="status"
-                        className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 rounded-2xl border border-line bg-surface-2/95 px-4 py-3 shadow-float backdrop-blur"
+                        className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 rounded-2xl border border-line bg-surface-2 px-4 py-3"
                     >
                         <span className="mt-0.5 shrink-0">{toneIcon[toast.tone ?? 'success']}</span>
                         <div className="min-w-0">

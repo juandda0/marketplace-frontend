@@ -8,6 +8,7 @@ import ProductVisual from '../../../core/ui/ProductVisual';
 import { CoinAmount } from '../../../core/ui/Unicoin';
 import EmptyState from '../../../core/ui/EmptyState';
 import { ListSkeleton, Skeleton } from '../../../core/ui/Skeleton';
+import Emoji from '../../../core/ui/Emoji';
 
 type Filter = 'live' | 'today' | 'ended';
 
@@ -35,7 +36,7 @@ const AuctionsPage = () => {
     return (
         <div>
             <div className="mb-5">
-                <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-auction">
+                <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-auction-ink">
                     <LiveDot /> {live.length} subastas activas
                 </p>
                 <h1 className="mt-1 text-[26px] font-bold tracking-tight md:text-3xl">Subastas</h1>
@@ -49,20 +50,21 @@ const AuctionsPage = () => {
                 featured && (
                     <Link
                         to={`/subastas/${featured.id}`}
-                        className="group relative mb-6 block overflow-hidden rounded-3xl border border-auction/25"
+                        className="group relative mb-6 block overflow-hidden rounded-3xl border border-auction-line"
                     >
-                        <ProductVisual visual={featured.visual} variant={1} iconScale="sm" iconPosition="top" alt={featured.title} className="aspect-[4/3] w-full md:aspect-[21/8]" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                        <AuctionTimePill endsAt={featured.endsAt} className="absolute left-3 top-3" />
-                        <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">Termina pronto</p>
+                        <div className="relative">
+                            <ProductVisual visual={featured.visual} variant={1} iconScale="lg" alt={featured.title} className="aspect-[16/9] w-full md:aspect-[21/7]" />
+                            <AuctionTimePill endsAt={featured.endsAt} className="absolute left-3 top-3" />
+                        </div>
+                        <div className="bg-ink p-4 text-white">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#FDBA8C]">Termina pronto</p>
                             <h2 className="mt-1 text-xl font-bold leading-tight">{featured.title}</h2>
                             <div className="mt-3 flex items-end justify-between">
                                 <div>
-                                    <p className="text-[11px] text-white/65">Puja actual · {featured.bids.length} pujas</p>
-                                    <CoinAmount amount={featured.currentBid} suffix className="text-2xl font-bold text-[#FFD66B]" />
+                                    <p className="text-[11px] text-[#CBD5E1]">Puja actual · {featured.bids.length} pujas</p>
+                                    <CoinAmount amount={featured.currentBid} suffix className="text-2xl font-bold text-[#FBBF24]" />
                                 </div>
-                                <span className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-[13px] font-semibold text-[#1a0a03] transition group-hover:bg-[#FFE7DF]">
+                                <span className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-[13px] font-semibold text-[#7C2D12] transition-colors group-hover:bg-[#FFEDD5]">
                                     <PiGavel aria-hidden /> Pujar
                                 </span>
                             </div>
@@ -78,8 +80,8 @@ const AuctionsPage = () => {
                     { icon: PiTimer, text: 'Gana la oferta más alta al final' },
                     { icon: PiShieldCheck, text: 'Si te superan, no pierdes nada' },
                 ].map(({ icon: Icon, text }) => (
-                    <div key={text} className="rounded-2xl border border-line/70 bg-surface px-2 py-3">
-                        <Icon className="mx-auto h-5 w-5 text-auction" aria-hidden />
+                    <div key={text} className="rounded-2xl border border-line bg-surface px-2 py-3">
+                        <Icon className="mx-auto h-5 w-5 text-auction-ink" aria-hidden />
                         <p className="mt-1.5 text-[11px] leading-tight text-muted">{text}</p>
                     </div>
                 ))}
@@ -109,7 +111,7 @@ const AuctionsPage = () => {
                     ))}
                 </div>
             ) : (
-                <EmptyState icon={<PiGavel aria-hidden />} title="Nada por aquí" description="No hay subastas en esta categoría ahora mismo." />
+                <EmptyState icon={<Emoji name="trophy" />} title="Nada por aquí" description="No hay subastas en esta categoría ahora mismo." />
             )}
         </div>
     );

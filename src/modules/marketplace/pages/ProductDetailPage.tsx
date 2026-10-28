@@ -31,6 +31,7 @@ import { Rating, Stars } from '../../../core/ui/Rating';
 import { DetailSkeleton } from '../../../core/ui/Skeleton';
 import { copToUnicoin, formatCOP, formatCompact } from '../../../core/utils/format';
 import { CAMPUS_DELIVERY_FEE } from '../../../lib/config';
+import Emoji from '../../../core/ui/Emoji';
 
 const ProductDetailPage = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -55,7 +56,7 @@ const ProductDetailPage = () => {
     if (!product) {
         return (
             <EmptyState
-                icon={<PiPackage aria-hidden />}
+                icon={<Emoji name="package" />}
                 title="Producto no encontrado"
                 description="Puede que el vendedor lo haya retirado del catálogo."
                 action={<ButtonLink to="/catalogo">Ver catálogo</ButtonLink>}
@@ -107,20 +108,20 @@ const ProductDetailPage = () => {
                         {product.originalPrice && (
                             <>
                                 <span className="text-base text-subtle line-through tabular">{formatCOP(product.originalPrice)}</span>
-                                <span className="text-sm font-semibold text-primary">−{discount}%</span>
+                                <span className="text-sm font-semibold text-primary-ink">−{discount}%</span>
                             </>
                         )}
                     </div>
                     <p className="mt-2 flex items-center gap-1.5 text-[13px] text-muted">
                         o paga con
-                        <CoinAmount amount={copToUnicoin(product.price)} suffix className="font-semibold text-coin" />
+                        <CoinAmount amount={copToUnicoin(product.price)} suffix className="font-semibold text-coin-ink" />
                         {product.unit && <span className="text-subtle">· por {product.unit}</span>}
                     </p>
 
                     {/* Entrega */}
-                    <div className="card mt-5 divide-y divide-line/70">
+                    <div className="card mt-5 divide-y divide-line">
                         <div className="flex items-start gap-3 p-3.5">
-                            <PiMapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
+                            <PiMapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary-ink" aria-hidden />
                             <div className="text-[13px]">
                                 <p className="font-medium text-fg">Recoge gratis en el punto del vendedor</p>
                                 <p className="text-muted">{store?.location ?? 'Campus Central, Montería'}</p>
@@ -162,12 +163,12 @@ const ProductDetailPage = () => {
 
                     {/* Tienda */}
                     {store && (
-                        <Link to={`/tiendas/${store.id}`} className="card mt-6 flex items-center gap-3 p-3.5 transition hover:border-line">
+                        <Link to={`/tiendas/${store.id}`} className="card mt-6 flex items-center gap-3 p-3.5 transition-colors hover:border-primary-line">
                             <StoreLogo store={store} />
                             <div className="min-w-0 flex-1">
                                 <p className="flex items-center gap-1 text-[14px] font-semibold">
                                     <span className="truncate">{store.name}</span>
-                                    {store.verified && <PiSealCheckFill className="h-4 w-4 shrink-0 text-primary" aria-label="Verificada" />}
+                                    {store.verified && <PiSealCheckFill className="h-4 w-4 shrink-0 text-primary-ink" aria-label="Verificada" />}
                                 </p>
                                 <p className="truncate text-xs text-subtle">{store.ownerName} · {store.responseTime}</p>
                                 <div className="mt-1 flex items-center gap-2 text-xs text-muted">
@@ -181,7 +182,7 @@ const ProductDetailPage = () => {
                     )}
 
                     <p className="mt-3 flex items-center gap-1.5 text-xs text-subtle">
-                        <PiShieldCheck className="h-4 w-4 text-primary" aria-hidden />
+                        <PiShieldCheck className="h-4 w-4 text-primary-ink" aria-hidden />
                         Compra protegida: si no recibes tu pedido, te devolvemos el dinero.
                     </p>
                 </div>
@@ -223,7 +224,7 @@ const ProductDetailPage = () => {
                         title={`Más de ${product.storeName}`}
                         to={`/tiendas/${product.storeId}`}
                         linkLabel="Ver tienda"
-                        icon={<PiStorefront className="h-5 w-5 text-primary" aria-hidden />}
+                        icon={<PiStorefront className="h-5 w-5 text-primary-ink" aria-hidden />}
                     />
                     <div className="-mx-4 overflow-x-auto px-4 scrollbar-none md:mx-0 md:px-0">
                         <div className="flex gap-3 md:grid md:grid-cols-4 md:gap-4">

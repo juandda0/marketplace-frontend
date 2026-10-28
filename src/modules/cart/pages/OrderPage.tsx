@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { PiCheckBold, PiCheckCircleFill, PiMapPin, PiReceipt } from 'react-icons/pi';
+import { PiCheckBold, PiCheckCircleFill, PiMapPin } from 'react-icons/pi';
 import { useAsync } from '../../../core/hooks/useAsync';
 import { useNow } from '../../../core/hooks/useNow';
 import { getOrderById } from '../services/orderService';
@@ -10,6 +10,7 @@ import EmptyState from '../../../core/ui/EmptyState';
 import { CoinAmount } from '../../../core/ui/Unicoin';
 import { Skeleton } from '../../../core/ui/Skeleton';
 import { formatCOP, formatDateTime } from '../../../core/utils/format';
+import Emoji from '../../../core/ui/Emoji';
 
 const steps: { status: OrderStatus; label: string; detail: string }[] = [
     { status: 'confirmado', label: 'Pedido confirmado', detail: 'La tienda recibió tu pedido' },
@@ -49,7 +50,7 @@ const OrderPage = () => {
         );
     }
     if (!order) {
-        return <EmptyState icon={<PiReceipt aria-hidden />} title="Pedido no encontrado" action={<ButtonLink to="/perfil">Ver mis pedidos</ButtonLink>} />;
+        return <EmptyState icon={<Emoji name="receipt" />} title="Pedido no encontrado" action={<ButtonLink to="/perfil">Ver mis pedidos</ButtonLink>} />;
     }
 
     const status = liveStatus(order, now);
@@ -59,8 +60,8 @@ const OrderPage = () => {
     return (
         <div className="mx-auto max-w-xl">
             <div className="flex flex-col items-center text-center">
-                <span className={`flex h-20 w-20 items-center justify-center rounded-full bg-primary/15 ${isNew ? 'animate-pop' : ''}`}>
-                    <PiCheckCircleFill className="h-12 w-12 text-primary" aria-hidden />
+                <span className={`flex h-20 w-20 items-center justify-center rounded-full bg-primary-soft ${isNew ? 'animate-pop' : ''}`}>
+                    <PiCheckCircleFill className="h-12 w-12 text-primary-ink" aria-hidden />
                 </span>
                 <h1 className="mt-4 text-2xl font-bold tracking-tight">{isNew ? '¡Pedido confirmado!' : `Pedido ${order.id}`}</h1>
                 <p className="mt-1 text-[13px] text-muted">
@@ -70,11 +71,11 @@ const OrderPage = () => {
 
             {/* Código de entrega */}
             {status !== 'entregado' && (
-                <section className="mt-6 rounded-3xl border border-dashed border-primary/40 bg-primary/[0.06] p-5 text-center">
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-primary">Código de entrega</p>
+                <section className="mt-6 rounded-3xl border border-dashed border-primary-line bg-primary-soft p-5 text-center">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-primary-ink">Código de entrega</p>
                     <p className="mt-1 font-mono text-[40px] font-bold tracking-[0.3em] text-fg">{order.pickupCode}</p>
                     <p className="mt-1 flex items-center justify-center gap-1.5 text-[13px] text-muted">
-                        <PiMapPin className="h-4 w-4 text-primary" aria-hidden />
+                        <PiMapPin className="h-4 w-4 text-primary-ink" aria-hidden />
                         {order.deliveryMethod === 'campus' ? `Te lo llevamos a: ${order.deliveryPoint}` : order.deliveryPoint}
                     </p>
                 </section>
@@ -95,7 +96,7 @@ const OrderPage = () => {
                                 <span
                                     className={`relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
                                         done ? 'bg-primary text-primary-fg' : 'border-2 border-line bg-surface'
-                                    } ${current ? 'ring-4 ring-primary/20' : ''}`}
+                                    } ${current ? 'ring-4 ring-primary-line' : ''}`}
                                 >
                                     {done && <PiCheckBold className="h-3 w-3" aria-hidden />}
                                 </span>
@@ -110,7 +111,7 @@ const OrderPage = () => {
             </section>
 
             {/* Productos */}
-            <section className="card mt-5 divide-y divide-line/70">
+            <section className="card mt-5 divide-y divide-line">
                 {order.items.map((item) => (
                     <div key={item.productId} className="flex items-center gap-3 p-3.5">
                         <ProductVisual visual={item.visual} imageUrl={item.imageUrl} imageFit={item.imageFit} alt={item.name} className="h-12 w-12 shrink-0 rounded-xl" />
@@ -135,7 +136,7 @@ const OrderPage = () => {
                     <div className="flex items-center justify-between pt-1.5 font-semibold">
                         <span>Total</span>
                         {order.totalUnicoin ? (
-                            <CoinAmount amount={order.totalUnicoin} suffix className="text-lg font-bold text-coin" />
+                            <CoinAmount amount={order.totalUnicoin} suffix className="text-lg font-bold text-coin-ink" />
                         ) : (
                             <span className="text-lg font-bold tabular">{formatCOP(order.total)}</span>
                         )}

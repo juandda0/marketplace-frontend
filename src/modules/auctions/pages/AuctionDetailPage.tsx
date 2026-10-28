@@ -21,6 +21,7 @@ import { CountdownBlocks } from '../../../core/ui/Countdown';
 import { CoinAmount } from '../../../core/ui/Unicoin';
 import { DetailSkeleton } from '../../../core/ui/Skeleton';
 import { formatCOP, formatDateTime, formatNumber, formatRelative, unicoinToCop } from '../../../core/utils/format';
+import Emoji from '../../../core/ui/Emoji';
 
 const AuctionDetailPage = () => {
     const { auctionId } = useParams<{ auctionId: string }>();
@@ -41,7 +42,7 @@ const AuctionDetailPage = () => {
     if (!auction) {
         return (
             <EmptyState
-                icon={<PiGavel aria-hidden />}
+                icon={<Emoji name="trophy" />}
                 title="Subasta no encontrada"
                 action={<ButtonLink to="/subastas">Ver subastas</ButtonLink>}
             />
@@ -80,16 +81,16 @@ const AuctionDetailPage = () => {
                         imageUrl={auction.imageUrl}
                         alt={auction.title}
                         iconScale="lg"
-                        className="aspect-[4/3] w-full rounded-3xl border border-line/60 md:aspect-square"
+                        className="aspect-[4/3] w-full rounded-3xl border border-line md:aspect-square"
                     />
                     <span
-                        className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur ${
-                            ended ? 'bg-[#0B0F0D]/75 text-white/80' : 'bg-[#0B0F0D]/75 text-white'
+                        className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ${
+                            ended ? 'bg-ink text-[#CBD5E1]' : 'bg-ink text-white'
                         }`}
                     >
                         {ended ? 'Finalizada' : (<><LiveDot /> En vivo</>)}
                     </span>
-                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#0B0F0D]/75 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold text-white">
                         <PiEye className="h-3.5 w-3.5" aria-hidden /> {auction.watchers}
                     </span>
                 </div>
@@ -106,14 +107,14 @@ const AuctionDetailPage = () => {
                         <div className="p-4">
                             <p className="text-[12px] font-medium text-subtle">{ended ? 'Precio final' : 'Puja más alta'}</p>
                             <div className="mt-1 flex items-end justify-between gap-3">
-                                <CoinAmount amount={auction.currentBid} suffix className="text-[34px] font-bold leading-none tracking-tight text-coin" />
+                                <CoinAmount amount={auction.currentBid} suffix className="text-[34px] font-bold leading-none tracking-tight text-coin-ink" />
                                 <span className="pb-1 text-xs text-subtle tabular">≈ {formatCOP(unicoinToCop(auction.currentBid))}</span>
                             </div>
                             {auction.leader && (
                                 <p className="mt-2 flex items-center gap-1.5 text-[13px] text-muted">
-                                    <PiCrownSimpleFill className="h-4 w-4 text-coin" aria-hidden />
+                                    <PiCrownSimpleFill className="h-4 w-4 text-coin-ink" aria-hidden />
                                     {leadingIsMe ? (
-                                        <span className="font-semibold text-primary">{ended ? '¡Ganaste esta subasta!' : 'Vas ganando'}</span>
+                                        <span className="font-semibold text-primary-ink">{ended ? '¡Ganaste esta subasta!' : 'Vas ganando'}</span>
                                     ) : (
                                         <span>
                                             {ended ? 'Ganó' : 'Va ganando'} <span className="font-medium text-fg">{auction.leader.bidderName}</span>
@@ -122,12 +123,12 @@ const AuctionDetailPage = () => {
                                 </p>
                             )}
                             {outbid && !ended && (
-                                <p className="mt-2 rounded-xl bg-auction/10 px-3 py-2 text-[13px] font-medium text-auction">
+                                <p className="mt-2 rounded-xl bg-auction-soft px-3 py-2 text-[13px] font-medium text-auction-ink">
                                     Te superaron. Tu última puja fue de {formatNumber(Math.max(...myBids.map((b) => b.amount)))} UC.
                                 </p>
                             )}
                         </div>
-                        <div className="grid grid-cols-3 divide-x divide-line/70 border-t border-line/70 text-center">
+                        <div className="grid grid-cols-3 divide-x divide-line border-t border-line text-center">
                             <div className="py-2.5">
                                 <p className="text-[11px] text-subtle">Precio base</p>
                                 <p className="text-[13px] font-semibold tabular">{formatNumber(auction.startingBid)} UC</p>
@@ -150,7 +151,7 @@ const AuctionDetailPage = () => {
                         </p>
                         {ended ? (
                             <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface-2 p-3.5 text-[13px] text-muted">
-                                <PiTrophyFill className="h-6 w-6 text-coin" aria-hidden />
+                                <PiTrophyFill className="h-6 w-6 text-coin-ink" aria-hidden />
                                 El ganador tiene 48 horas para coordinar la entrega con la tienda.
                             </div>
                         ) : (
@@ -162,7 +163,7 @@ const AuctionDetailPage = () => {
                     {!ended && (
                         <div className="mt-5 hidden md:block">
                             <BidControls amount={amount} min={min} balance={balance} onStep={step} onSubmit={submit} submitting={submitting} disabled={leadingIsMe} />
-                            {error && <p className="mt-2 text-[13px] text-danger" role="alert">{error}</p>}
+                            {error && <p className="mt-2 text-[13px] text-danger-ink" role="alert">{error}</p>}
                         </div>
                     )}
 
@@ -172,7 +173,7 @@ const AuctionDetailPage = () => {
                     </section>
 
                     {store && (
-                        <Link to={`/tiendas/${store.id}`} className="card mt-5 flex items-center gap-3 p-3 transition hover:border-line">
+                        <Link to={`/tiendas/${store.id}`} className="card mt-5 flex items-center gap-3 p-3 transition-colors hover:border-primary-line">
                             <StoreLogo store={store} className="h-10 w-10 rounded-xl" />
                             <div className="min-w-0 flex-1">
                                 <p className="text-[13px] text-subtle">Subastado por</p>
@@ -190,20 +191,20 @@ const AuctionDetailPage = () => {
                     <h2 className="text-[17px] font-semibold tracking-tight">Historial de pujas</h2>
                     <span className="text-[13px] text-subtle">{auction.bids.length} pujas</span>
                 </div>
-                <ol className="card divide-y divide-line/70">
+                <ol className="card divide-y divide-line">
                     {auction.bids.map((bid, index) => {
                         const mine = bid.userId === user.id;
                         return (
-                            <li key={bid.id} className={`flex items-center gap-3 px-4 py-3 ${index === 0 ? 'bg-coin/[0.06]' : ''}`}>
+                            <li key={bid.id} className={`flex items-center gap-3 px-4 py-3 ${index === 0 ? 'bg-coin-soft' : ''}`}>
                                 <Avatar name={bid.bidderName} size="sm" />
                                 <div className="min-w-0 flex-1">
                                     <p className="flex items-center gap-1.5 text-[14px] font-medium">
                                         {mine ? 'Tú' : bid.bidderName}
-                                        {index === 0 && <PiCrownSimpleFill className="h-3.5 w-3.5 text-coin" aria-label="Puja más alta" />}
+                                        {index === 0 && <PiCrownSimpleFill className="h-3.5 w-3.5 text-coin-ink" aria-label="Puja más alta" />}
                                     </p>
                                     <p className="text-xs text-subtle">{formatRelative(bid.createdAt, now)}</p>
                                 </div>
-                                <CoinAmount amount={bid.amount} className={`text-[14px] font-semibold ${index === 0 ? 'text-coin' : 'text-muted'}`} />
+                                <CoinAmount amount={bid.amount} className={`text-[14px] font-semibold ${index === 0 ? 'text-coin-ink' : 'text-muted'}`} />
                             </li>
                         );
                     })}
@@ -227,7 +228,7 @@ const AuctionDetailPage = () => {
                 ) : (
                     <StickyActionBar>
                         <div className="w-full">
-                            {error && <p className="mb-2 text-[13px] text-danger" role="alert">{error}</p>}
+                            {error && <p className="mb-2 text-[13px] text-danger-ink" role="alert">{error}</p>}
                             <BidControls amount={amount} min={min} balance={balance} onStep={step} onSubmit={submit} submitting={submitting} disabled={leadingIsMe} />
                         </div>
                     </StickyActionBar>
@@ -252,7 +253,7 @@ const BidControls = ({ amount, min, balance, onStep, onSubmit, submitting, disab
         <div className="mb-2 flex items-center justify-between text-xs text-subtle">
             <span>Mínimo {formatNumber(min)} UC</span>
             <span>
-                Tu saldo: <span className="font-semibold text-coin">{formatNumber(balance)} UC</span>
+                Tu saldo: <span className="font-semibold text-coin-ink">{formatNumber(balance)} UC</span>
             </span>
         </div>
         <div className="flex items-center gap-2">
@@ -261,7 +262,7 @@ const BidControls = ({ amount, min, balance, onStep, onSubmit, submitting, disab
                     type="button"
                     onClick={() => onStep(-1)}
                     disabled={amount <= min || disabled}
-                    className="flex h-full w-11 items-center justify-center text-muted disabled:opacity-35"
+                    className="flex h-full w-11 items-center justify-center text-muted disabled:text-line"
                     aria-label="Bajar puja"
                 >
                     <PiMinus aria-hidden />
@@ -271,7 +272,7 @@ const BidControls = ({ amount, min, balance, onStep, onSubmit, submitting, disab
                     type="button"
                     onClick={() => onStep(1)}
                     disabled={disabled}
-                    className="flex h-full w-11 items-center justify-center text-muted disabled:opacity-35"
+                    className="flex h-full w-11 items-center justify-center text-muted disabled:text-line"
                     aria-label="Subir puja"
                 >
                     <PiPlus aria-hidden />

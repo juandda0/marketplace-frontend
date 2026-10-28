@@ -2,16 +2,16 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'coin' | 'raffle
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const base =
-    'inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-semibold transition-all duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 [&_svg]:shrink-0';
+    'inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:border-line disabled:bg-surface-3 disabled:text-subtle [&_svg]:shrink-0';
 
 const variants: Record<ButtonVariant, string> = {
-    primary: 'bg-primary text-primary-fg shadow-glow hover:bg-primary-strong',
+    primary: 'bg-primary text-primary-fg hover:bg-primary-hover',
     secondary: 'border border-line bg-surface-2 text-fg hover:bg-surface-3',
     ghost: 'text-muted hover:bg-surface-2 hover:text-fg',
-    coin: 'bg-coin text-coin-fg shadow-coin hover:brightness-105',
-    raffle: 'bg-raffle text-white shadow-[0_10px_30px_-10px_rgb(var(--raffle)/0.6)] hover:brightness-110 [[data-theme=dark]_&]:text-[#140b33]',
-    auction: 'bg-auction text-white shadow-[0_10px_30px_-10px_rgb(var(--auction)/0.6)] hover:brightness-110 [[data-theme=dark]_&]:text-[#2b0c02]',
-    danger: 'border border-danger/30 bg-danger/10 text-danger hover:bg-danger/15',
+    coin: 'bg-coin text-coin-fg hover:bg-[#d97706]',
+    raffle: 'bg-raffle text-raffle-fg hover:bg-[#5b21b6]',
+    auction: 'bg-auction text-auction-fg hover:bg-[#9a3412]',
+    danger: 'border border-danger-line bg-danger-soft text-danger-ink hover:bg-danger hover:text-danger-fg',
 };
 
 const sizes: Record<ButtonSize, string> = {

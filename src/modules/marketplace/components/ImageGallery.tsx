@@ -45,7 +45,7 @@ const ImageGallery = ({ images, visual, imageFit, productName }: ImageGalleryPro
                 <div
                     ref={trackRef}
                     onScroll={onScroll}
-                    className="flex snap-x snap-mandatory overflow-x-auto rounded-3xl border border-line/60 scrollbar-none"
+                    className="flex snap-x snap-mandatory overflow-x-auto rounded-3xl border border-line scrollbar-none"
                 >
                     {slides.map((slide, i) => (
                         <div key={i} className="w-full shrink-0 snap-center">
@@ -58,7 +58,7 @@ const ImageGallery = ({ images, visual, imageFit, productName }: ImageGalleryPro
                         {slides.map((_, i) => (
                             <span
                                 key={i}
-                                className={`h-1.5 rounded-full transition-all ${i === active ? 'w-5 bg-white' : 'w-1.5 bg-white/50'}`}
+                                className={`h-1.5 rounded-full transition-all ${i === active ? 'w-5 bg-white' : 'w-1.5 bg-[#94A3B8]'}`}
                             />
                         ))}
                     </div>
@@ -71,7 +71,7 @@ const ImageGallery = ({ images, visual, imageFit, productName }: ImageGalleryPro
                             key={i}
                             type="button"
                             onClick={() => goTo(i)}
-                            className={`overflow-hidden rounded-xl border-2 transition ${i === active ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                            className={`overflow-hidden rounded-xl border-2 transition ${i === active ? 'border-primary' : 'border-line'}`}
                             aria-label={`Ver imagen ${i + 1}`}
                         >
                             {renderSlide(slide, 'h-16 w-16')}

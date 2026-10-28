@@ -15,7 +15,7 @@ const QuantityStepper = ({ value, min = 1, max, onChange, size = 'md', label = '
         <div className="inline-flex items-center rounded-xl border border-line bg-surface-2" role="group" aria-label={label}>
             <button
                 type="button"
-                className={`${btn} flex items-center justify-center rounded-l-xl text-muted transition hover:text-fg disabled:opacity-35`}
+                className={`${btn} flex items-center justify-center rounded-l-xl text-muted transition hover:text-fg disabled:text-line`}
                 onClick={() => onChange(value - 1)}
                 disabled={value <= min}
                 aria-label="Disminuir"
@@ -27,7 +27,7 @@ const QuantityStepper = ({ value, min = 1, max, onChange, size = 'md', label = '
             </span>
             <button
                 type="button"
-                className={`${btn} flex items-center justify-center rounded-r-xl text-muted transition hover:text-fg disabled:opacity-35`}
+                className={`${btn} flex items-center justify-center rounded-r-xl text-muted transition hover:text-fg disabled:text-line`}
                 onClick={() => onChange(value + 1)}
                 disabled={value >= max}
                 aria-label="Aumentar"

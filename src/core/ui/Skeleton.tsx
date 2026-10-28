@@ -30,7 +30,7 @@ export const DetailSkeleton = () => (
 export const ListSkeleton = ({ count = 4 }: { count?: number }) => (
     <div className="space-y-3">
         {Array.from({ length: count }, (_, i) => (
-            <div key={i} className="flex gap-3 rounded-2xl border border-line/60 p-3">
+            <div key={i} className="flex gap-3 rounded-2xl border border-line p-3">
                 <Skeleton className="h-24 w-24 shrink-0 rounded-xl" />
                 <div className="flex-1 space-y-2 py-1">
                     <Skeleton className="h-4 w-4/5" />

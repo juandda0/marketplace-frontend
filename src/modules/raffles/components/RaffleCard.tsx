@@ -19,16 +19,16 @@ const RaffleCard = ({ raffle, layout = 'full' }: RaffleCardProps) => {
     return (
         <Link
             to={`/rifas/${raffle.id}`}
-            className={`card group block overflow-hidden transition hover:border-line ${rail ? 'w-[260px] shrink-0 md:w-auto' : ''}`}
+            className={`card group block overflow-hidden transition-colors hover:border-primary-line ${rail ? 'w-[260px] shrink-0 md:w-auto' : ''}`}
         >
             <div className="relative">
                 <ProductVisual visual={raffle.visual} alt={raffle.prize} className={rail ? 'aspect-[16/9] w-full' : 'aspect-[2/1] w-full'} />
-                <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-[#0B0F0D]/75 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-ink px-2 py-1 text-[11px] font-semibold text-white">
                     <PiTicket className="h-3.5 w-3.5" aria-hidden />
                     <CoinAmount amount={raffle.ticketPrice} /> / boleto
                 </span>
                 {raffle.myNumbers.length > 0 && (
-                    <span className="absolute right-2.5 top-2.5 rounded-full bg-raffle px-2 py-1 text-[11px] font-bold text-white [[data-theme=dark]_&]:text-[#140b33]">
+                    <span className="absolute right-2.5 top-2.5 rounded-full bg-raffle px-2 py-1 text-[11px] font-bold text-white">
                         Tienes {raffle.myNumbers.length}
                     </span>
                 )}
@@ -37,7 +37,7 @@ const RaffleCard = ({ raffle, layout = 'full' }: RaffleCardProps) => {
                 <h3 className="line-clamp-1 text-[15px] font-semibold text-fg">{raffle.title}</h3>
                 <p className="mt-0.5 truncate text-xs text-subtle">Organiza {raffle.organizer}</p>
                 <div className="mt-3 flex items-center justify-between text-xs">
-                    <span className="font-semibold text-raffle">{pct}% vendido</span>
+                    <span className="font-semibold text-raffle-ink">{pct}% vendido</span>
                     <span className="text-muted tabular">
                         {sold}/{raffle.totalTickets}
                     </span>

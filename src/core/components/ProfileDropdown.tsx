@@ -30,7 +30,7 @@ const ProfileDropdown = () => {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen((o) => !o)}
-                className="flex items-center rounded-full transition hover:opacity-90"
+                className="flex items-center rounded-full"
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-label="Abrir menú de cuenta"
@@ -41,7 +41,7 @@ const ProfileDropdown = () => {
             {isOpen && (
                 <div
                     role="menu"
-                    className="absolute right-0 z-50 mt-3 w-64 animate-fade-up rounded-2xl border border-line bg-surface p-2 shadow-float"
+                    className="absolute right-0 z-50 mt-3 w-64 animate-fade-up rounded-2xl border border-line bg-surface p-2"
                     onClick={() => setIsOpen(false)}
                 >
                     <div className="flex items-center gap-3 px-3 py-2.5">
@@ -77,7 +77,7 @@ const ProfileDropdown = () => {
                             logout();
                             navigate('/login');
                         }}
-                        className={`${item} w-full text-danger hover:text-danger`}
+                        className={`${item} w-full text-danger-ink hover:text-danger-ink`}
                         role="menuitem"
                     >
                         <PiSignOut className="h-5 w-5" aria-hidden /> Cerrar sesión

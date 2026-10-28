@@ -51,10 +51,10 @@ const RegisterForm = () => {
 
     return (
         <AuthLayout title="Crea tu cuenta" subtitle="Únete a la comunidad de compra y venta de la Universidad de Córdoba.">
-            <div className="mb-5 flex items-center gap-3 rounded-2xl border border-coin/25 bg-coin/10 p-3 text-[13px]">
+            <div className="mb-5 flex items-center gap-3 rounded-2xl border border-coin-line bg-coin-soft p-3 text-[13px]">
                 <UnicoinIcon className="h-8 w-8" />
                 <p className="text-muted">
-                    Recibe <span className="font-semibold text-coin">{WELCOME_BONUS} UNICOIN</span> de bienvenida al registrarte.
+                    Recibe <span className="font-semibold text-coin-ink">{WELCOME_BONUS} UNICOIN</span> de bienvenida al registrarte.
                 </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -102,7 +102,7 @@ const RegisterForm = () => {
                 </label>
 
                 {error && (
-                    <p className="rounded-xl border border-danger/30 bg-danger/10 px-3.5 py-2.5 text-[13px] text-danger" role="alert">
+                    <p className="rounded-xl border border-danger-line bg-danger-soft px-3.5 py-2.5 text-[13px] text-danger-ink" role="alert">
                         {error}
                     </p>
                 )}
@@ -113,7 +113,7 @@ const RegisterForm = () => {
             </form>
             <p className="mt-8 text-center text-[14px] text-muted">
                 ¿Ya tienes cuenta?{' '}
-                <Link to="/login" className="font-semibold text-primary hover:underline">
+                <Link to="/login" className="font-semibold text-primary-ink hover:underline">
                     Inicia sesión
                 </Link>
             </p>

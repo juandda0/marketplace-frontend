@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PiChatCircleDots, PiCheck, PiClock, PiMapPin, PiPlus, PiSealCheckFill, PiStorefront } from 'react-icons/pi';
+import { PiChatCircleDots, PiCheck, PiClock, PiMapPin, PiPlus, PiSealCheckFill } from 'react-icons/pi';
 import { useAsync } from '../../../core/hooks/useAsync';
 import { getStoreById, isFollowingStore, toggleFollowStore } from '../services/storeService';
 import { getProductsByStore } from '../services/productService';
@@ -17,6 +17,7 @@ import { ProductGridSkeleton, Skeleton } from '../../../core/ui/Skeleton';
 import { UnicoinIcon } from '../../../core/ui/Unicoin';
 import { formatCompact, formatNumber } from '../../../core/utils/format';
 import type { CategorySlug } from '../types';
+import Emoji from '../../../core/ui/Emoji';
 
 const StorePage = () => {
     const { storeId = '' } = useParams<{ storeId: string }>();
@@ -44,7 +45,7 @@ const StorePage = () => {
     if (!store) {
         return (
             <EmptyState
-                icon={<PiStorefront aria-hidden />}
+                icon={<Emoji name="convenience-store" />}
                 title="Tienda no encontrada"
                 description="Es posible que esta tienda ya no esté activa."
                 action={<ButtonLink to="/">Volver al inicio</ButtonLink>}
@@ -65,11 +66,10 @@ const StorePage = () => {
             {/* Portada */}
             <div className="relative -mx-4 -mt-4 md:mx-0 md:mt-0">
                 <ProductVisual visual={store.visual} variant={2} alt="" className="h-36 w-full md:h-48 md:rounded-3xl" />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-transparent md:rounded-3xl" />
             </div>
 
             <div className="relative -mt-12 flex items-end gap-4 px-1">
-                <StoreLogo store={store} className="h-20 w-20 rounded-2xl border-4 border-bg shadow-float" />
+                <StoreLogo store={store} className="h-20 w-20 rounded-2xl border-4 border-bg" />
                 <div className="ml-auto flex gap-2 pb-1">
                     {isOwner ? (
                         <Badge tone="primary" className="h-9 px-3 text-[12px]">Tu tienda</Badge>
@@ -84,7 +84,7 @@ const StorePage = () => {
             <div className="mt-3 px-1">
                 <h1 className="flex items-center gap-1.5 text-[24px] font-bold tracking-tight">
                     {store.name}
-                    {store.verified && <PiSealCheckFill className="h-6 w-6 text-primary" aria-label="Tienda verificada" />}
+                    {store.verified && <PiSealCheckFill className="h-6 w-6 text-primary-ink" aria-label="Tienda verificada" />}
                 </h1>
                 <p className="mt-0.5 text-[14px] text-muted">{store.tagline}</p>
                 <p className="mt-1 text-xs text-subtle">
@@ -92,12 +92,12 @@ const StorePage = () => {
                 </p>
 
                 {/* Métricas */}
-                <dl className="card mt-4 grid grid-cols-3 divide-x divide-line/70 py-3 text-center">
+                <dl className="card mt-4 grid grid-cols-3 divide-x divide-line py-3 text-center">
                     <div>
                         <dt className="text-[11px] text-subtle">Calificación</dt>
                         <dd className="mt-0.5 text-[17px] font-bold tabular">
                             {store.rating.toLocaleString('es-CO', { minimumFractionDigits: 1 })}
-                            <span className="text-coin"> ★</span>
+                            <span className="text-coin-ink"> ★</span>
                         </dd>
                     </div>
                     <div>
@@ -114,13 +114,13 @@ const StorePage = () => {
 
                 <ul className="mt-4 space-y-2 text-[13px] text-muted">
                     <li className="flex items-center gap-2.5">
-                        <PiMapPin className="h-[18px] w-[18px] text-primary" aria-hidden /> {store.location}
+                        <PiMapPin className="h-[18px] w-[18px] text-primary-ink" aria-hidden /> {store.location}
                     </li>
                     <li className="flex items-center gap-2.5">
-                        <PiClock className="h-[18px] w-[18px] text-primary" aria-hidden /> {store.schedule}
+                        <PiClock className="h-[18px] w-[18px] text-primary-ink" aria-hidden /> {store.schedule}
                     </li>
                     <li className="flex items-center gap-2.5">
-                        <PiChatCircleDots className="h-[18px] w-[18px] text-primary" aria-hidden /> {store.responseTime}
+                        <PiChatCircleDots className="h-[18px] w-[18px] text-primary-ink" aria-hidden /> {store.responseTime}
                     </li>
                     {store.acceptsUnicoin && (
                         <li className="flex items-center gap-2.5">

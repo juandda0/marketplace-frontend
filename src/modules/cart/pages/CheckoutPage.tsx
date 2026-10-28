@@ -35,8 +35,8 @@ const Option = ({ active, onClick, icon, title, detail, trailing, disabled }: Op
         aria-checked={active}
         disabled={disabled}
         onClick={onClick}
-        className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition disabled:opacity-50 ${
-            active ? 'border-primary/60 bg-primary/[0.07]' : 'border-line bg-surface hover:border-line'
+        className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition disabled:bg-surface-2 disabled:text-subtle ${
+            active ? 'border-primary bg-primary-soft' : 'border-line bg-surface'
         }`}
     >
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-3 text-fg">{icon}</span>
@@ -133,7 +133,7 @@ const CheckoutPage = () => {
                         icon={<PiStorefront className="h-5 w-5" aria-hidden />}
                         title="Recoger en el punto del vendedor"
                         detail={pickupPoint}
-                        trailing={<span className="text-[13px] font-semibold text-primary">Gratis</span>}
+                        trailing={<span className="text-[13px] font-semibold text-primary-ink">Gratis</span>}
                     />
                     <Option
                         active={delivery === 'campus'}
@@ -148,7 +148,7 @@ const CheckoutPage = () => {
                     <label className="mt-3 block animate-fade-up">
                         <span className="label">Punto de entrega</span>
                         <div className="relative">
-                            <PiMapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary" aria-hidden />
+                            <PiMapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-ink" aria-hidden />
                             <select value={point} onChange={(e) => setPoint(e.target.value)} className="input appearance-none pl-12">
                                 {campusPoints.map((p) => (
                                     <option key={p}>{p}</option>
@@ -172,10 +172,10 @@ const CheckoutPage = () => {
                             canPayWithUnicoin ? (
                                 <>Saldo: {formatNumber(balance)} UC · pago instantáneo</>
                             ) : (
-                                <span className="text-danger">Saldo insuficiente ({formatNumber(balance)} UC)</span>
+                                <span className="text-danger-ink">Saldo insuficiente ({formatNumber(balance)} UC)</span>
                             )
                         }
-                        trailing={<CoinAmount amount={totals.totalUnicoin} className="text-[13px] font-semibold text-coin" />}
+                        trailing={<CoinAmount amount={totals.totalUnicoin} className="text-[13px] font-semibold text-coin-ink" />}
                     />
                     <Option
                         active={payment === 'nequi'}
@@ -207,7 +207,7 @@ const CheckoutPage = () => {
             </label>
 
             {/* Totales */}
-            <section className="card divide-y divide-line/70 text-[14px]">
+            <section className="card divide-y divide-line text-[14px]">
                 <div className="flex justify-between p-4">
                     <span className="text-muted">Subtotal</span>
                     <span className="tabular">{formatCOP(totals.subtotal)}</span>
@@ -220,7 +220,7 @@ const CheckoutPage = () => {
                     <span className="font-semibold">Total</span>
                     {payment === 'unicoin' ? (
                         <span className="text-right">
-                            <CoinAmount amount={totals.totalUnicoin} suffix className="text-lg font-bold text-coin" />
+                            <CoinAmount amount={totals.totalUnicoin} suffix className="text-lg font-bold text-coin-ink" />
                             <span className="block text-xs text-subtle tabular">{formatCOP(totals.total)}</span>
                         </span>
                     ) : (
@@ -229,7 +229,7 @@ const CheckoutPage = () => {
                 </div>
             </section>
 
-            {error && <p className="text-[13px] text-danger" role="alert">{error}</p>}
+            {error && <p className="text-[13px] text-danger-ink" role="alert">{error}</p>}
 
             <StickyActionBar>
                 <Button size="lg" block onClick={confirm} loading={submitting} disabled={!effectivePayment}>

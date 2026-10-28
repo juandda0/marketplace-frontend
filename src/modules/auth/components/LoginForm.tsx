@@ -86,7 +86,7 @@ const LoginForm = () => {
                 </label>
 
                 {error && (
-                    <p className="rounded-xl border border-danger/30 bg-danger/10 px-3.5 py-2.5 text-[13px] text-danger" role="alert">
+                    <p className="rounded-xl border border-danger-line bg-danger-soft px-3.5 py-2.5 text-[13px] text-danger-ink" role="alert">
                         {error}
                     </p>
                 )}
@@ -107,7 +107,7 @@ const LoginForm = () => {
                 onClick={() => run('demo', loginAsDemo)}
                 loading={pending === 'demo'}
                 disabled={pending !== null}
-                icon={<PiSparkleFill className="h-5 w-5 text-coin" aria-hidden />}
+                icon={<PiSparkleFill className="h-5 w-5 text-coin-ink" aria-hidden />}
             >
                 Entrar como demo
             </Button>
@@ -115,7 +115,7 @@ const LoginForm = () => {
 
             <p className="mt-auto pt-10 text-center text-[14px] text-muted">
                 ¿No tienes cuenta?{' '}
-                <Link to="/registro" className="font-semibold text-primary hover:underline">
+                <Link to="/registro" className="font-semibold text-primary-ink hover:underline">
                     Regístrate
                 </Link>
             </p>

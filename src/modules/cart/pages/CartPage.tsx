@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PiShoppingBagOpen, PiStorefront, PiTrash } from 'react-icons/pi';
+import { PiStorefront, PiTrash } from 'react-icons/pi';
 import { useCart } from '../context/useCart';
 import ProductVisual from '../../../core/ui/ProductVisual';
 import QuantityStepper from '../../../core/ui/QuantityStepper';
@@ -9,6 +9,7 @@ import StickyActionBar from '../../../core/ui/StickyActionBar';
 import { CoinAmount } from '../../../core/ui/Unicoin';
 import { copToUnicoin, formatCOP, pluralize } from '../../../core/utils/format';
 import type { CartItem } from '../types';
+import Emoji from '../../../core/ui/Emoji';
 
 const CartPage = () => {
     const { items, count, subtotal, updateQuantity, removeItem } = useCart();
@@ -17,7 +18,7 @@ const CartPage = () => {
         return (
             <EmptyState
                 className="pt-20"
-                icon={<PiShoppingBagOpen aria-hidden />}
+                icon={<Emoji name="shopping-cart" />}
                 title="Tu carrito está vacío"
                 description="Explora lo que venden los emprendedores de la U y agrega tus favoritos."
                 action={<ButtonLink to="/catalogo">Explorar productos</ButtonLink>}
@@ -41,12 +42,12 @@ const CartPage = () => {
                         <section key={storeId} className="card overflow-hidden">
                             <Link
                                 to={`/tiendas/${storeId}`}
-                                className="flex items-center gap-2 border-b border-line/70 px-4 py-3 text-[13px] font-semibold hover:text-primary"
+                                className="flex items-center gap-2 border-b border-line px-4 py-3 text-[13px] font-semibold hover:text-primary-ink"
                             >
-                                <PiStorefront className="h-4 w-4 text-primary" aria-hidden />
+                                <PiStorefront className="h-4 w-4 text-primary-ink" aria-hidden />
                                 {storeItems[0].storeName}
                             </Link>
-                            <ul className="divide-y divide-line/70">
+                            <ul className="divide-y divide-line">
                                 {storeItems.map((item) => (
                                     <li key={item.productId} className="flex gap-3 p-3.5">
                                         <Link to={`/productos/${item.productId}`} className="shrink-0">
@@ -66,7 +67,7 @@ const CartPage = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => removeItem(item.productId)}
-                                                    className="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-subtle transition hover:bg-danger/10 hover:text-danger"
+                                                    className="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-subtle transition hover:bg-danger-soft hover:text-danger-ink"
                                                     aria-label={`Quitar ${item.name}`}
                                                 >
                                                     <PiTrash className="h-4 w-4" aria-hidden />
@@ -92,7 +93,7 @@ const CartPage = () => {
             </div>
 
             <aside className="mt-6 md:sticky md:top-24 md:mt-12">
-                <div className="card divide-y divide-line/70 text-[14px]">
+                <div className="card divide-y divide-line text-[14px]">
                     <div className="flex justify-between p-4">
                         <span className="text-muted">Subtotal</span>
                         <span className="font-semibold tabular">{formatCOP(subtotal)}</span>
@@ -103,7 +104,7 @@ const CartPage = () => {
                     </div>
                     <div className="flex items-center justify-between p-4">
                         <span className="text-muted">Con UNICOIN</span>
-                        <CoinAmount amount={copToUnicoin(subtotal)} suffix className="font-semibold text-coin" />
+                        <CoinAmount amount={copToUnicoin(subtotal)} suffix className="font-semibold text-coin-ink" />
                     </div>
                 </div>
                 <StickyActionBar>

@@ -30,10 +30,10 @@ const ProductCard = ({ product, className = '' }: ProductCardProps) => {
                         imageUrl={product.imageUrl}
                         imageFit={product.imageFit}
                         alt={product.name}
-                        className="aspect-square w-full rounded-2xl border border-line/50 transition duration-300 group-hover:brightness-110"
+                        className="aspect-square w-full rounded-2xl border border-line transition duration-300"
                     />
                     {discount > 0 && (
-                        <span className="absolute left-2 top-2 rounded-full bg-[#06140D]/80 px-2 py-0.5 text-[11px] font-bold text-[#5BE3A1] backdrop-blur">
+                        <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-fg">
                             −{discount}%
                         </span>
                     )}
@@ -41,7 +41,7 @@ const ProductCard = ({ product, className = '' }: ProductCardProps) => {
                 <button
                     type="button"
                     onClick={quickAdd}
-                    className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-[#0B0F0D]/80 text-white shadow-float backdrop-blur transition hover:bg-primary hover:text-primary-fg active:scale-95"
+                    className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-colors hover:bg-primary hover:text-primary-fg active:scale-95"
                     aria-label={`Agregar ${product.name} al carrito`}
                 >
                     <PiPlus className="h-4 w-4" aria-hidden />
@@ -52,7 +52,7 @@ const ProductCard = ({ product, className = '' }: ProductCardProps) => {
                 <p className="mt-1 flex items-center gap-1 truncate text-xs text-subtle">
                     <span className="truncate">{product.storeName}</span>
                     <span aria-hidden>·</span>
-                    <PiStarFill className="h-3 w-3 shrink-0 text-coin" aria-hidden />
+                    <PiStarFill className="h-3 w-3 shrink-0 text-coin-ink" aria-hidden />
                     <span className="text-muted">{product.rating.toLocaleString('es-CO', { minimumFractionDigits: 1 })}</span>
                 </p>
                 <div className="mt-1.5 flex flex-wrap items-baseline gap-x-1.5">

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { PiCheckBold, PiDiceFive, PiHeartFill, PiTicket, PiTrophy, PiX } from 'react-icons/pi';
+import { PiCheckBold, PiDiceFive, PiHeartFill, PiTicket, PiX } from 'react-icons/pi';
 import { useAsync } from '../../../core/hooks/useAsync';
 import { buyTickets, getRaffleById } from '../services/raffleService';
 import { useCurrentUser } from '../../auth/hooks/useAuth';
@@ -17,6 +17,7 @@ import { CountdownBlocks } from '../../../core/ui/Countdown';
 import { CoinAmount } from '../../../core/ui/Unicoin';
 import { DetailSkeleton } from '../../../core/ui/Skeleton';
 import { formatCOP, formatDateTime, formatNumber, padTicket } from '../../../core/utils/format';
+import Emoji from '../../../core/ui/Emoji';
 
 const MAX_PER_PURCHASE = 10;
 
@@ -33,7 +34,7 @@ const RaffleDetailPage = () => {
 
     if (loading && !raffle) return <DetailSkeleton />;
     if (!raffle) {
-        return <EmptyState icon={<PiTicket aria-hidden />} title="Rifa no encontrada" action={<ButtonLink to="/rifas">Ver rifas</ButtonLink>} />;
+        return <EmptyState icon={<Emoji name="ticket" />} title="Rifa no encontrada" action={<ButtonLink to="/rifas">Ver rifas</ButtonLink>} />;
     }
 
     const taken = new Set(raffle.taken);
@@ -82,7 +83,7 @@ const RaffleDetailPage = () => {
         <div>
             <div className="grid gap-6 md:grid-cols-2 md:gap-10">
                 <div>
-                    <ProductVisual visual={raffle.visual} alt={raffle.prize} iconScale="lg" className="aspect-[16/10] w-full rounded-3xl border border-line/60 md:aspect-square" />
+                    <ProductVisual visual={raffle.visual} alt={raffle.prize} iconScale="lg" className="aspect-[16/10] w-full rounded-3xl border border-line md:aspect-square" />
                 </div>
 
                 <div>
@@ -96,7 +97,7 @@ const RaffleDetailPage = () => {
                     <p className="mt-1 text-[13px] text-muted">
                         Organiza{' '}
                         {raffle.organizerStoreId ? (
-                            <Link to={`/tiendas/${raffle.organizerStoreId}`} className="font-medium text-primary hover:underline">
+                            <Link to={`/tiendas/${raffle.organizerStoreId}`} className="font-medium text-primary-ink hover:underline">
                                 {raffle.organizer}
                             </Link>
                         ) : (
@@ -108,7 +109,7 @@ const RaffleDetailPage = () => {
                         <div className="flex items-end justify-between">
                             <div>
                                 <p className="text-[12px] text-subtle">Valor del boleto</p>
-                                <CoinAmount amount={raffle.ticketPrice} suffix className="text-[28px] font-bold leading-tight text-coin" />
+                                <CoinAmount amount={raffle.ticketPrice} suffix className="text-[28px] font-bold leading-tight text-coin-ink" />
                             </div>
                             <div className="text-right">
                                 <p className="text-[12px] text-subtle">Disponibles</p>
@@ -130,8 +131,8 @@ const RaffleDetailPage = () => {
                     </div>
 
                     {raffle.cause && (
-                        <div className="mt-4 flex gap-3 rounded-2xl border border-raffle/25 bg-raffle/[0.08] p-3.5">
-                            <PiHeartFill className="mt-0.5 h-5 w-5 shrink-0 text-raffle" aria-hidden />
+                        <div className="mt-4 flex gap-3 rounded-2xl border border-raffle-line bg-raffle-soft p-3.5">
+                            <PiHeartFill className="mt-0.5 h-5 w-5 shrink-0 text-raffle-ink" aria-hidden />
                             <div className="text-[13px]">
                                 <p className="font-semibold text-fg">Lo recaudado apoya</p>
                                 <p className="text-muted">{raffle.cause}</p>
@@ -141,7 +142,7 @@ const RaffleDetailPage = () => {
 
                     <section className="mt-5">
                         <h2 className="flex items-center gap-2 text-[15px] font-semibold">
-                            <PiTrophy className="h-5 w-5 text-coin" aria-hidden /> Premio
+                            <Emoji name="trophy" className="h-5 w-5" /> Premio
                         </h2>
                         <p className="mt-1 text-[14px] font-medium text-fg">{raffle.prize}</p>
                         <p className="mt-2 text-[14px] leading-relaxed text-muted">{raffle.description}</p>
@@ -154,7 +155,7 @@ const RaffleDetailPage = () => {
                                 {raffle.myNumbers.map((n) => (
                                     <span
                                         key={n}
-                                        className="inline-flex h-9 min-w-[3rem] items-center justify-center gap-1 rounded-xl bg-raffle px-2.5 text-[14px] font-bold text-white tabular [[data-theme=dark]_&]:text-[#140b33]"
+                                        className="inline-flex h-9 min-w-[3rem] items-center justify-center gap-1 rounded-xl bg-raffle px-2.5 text-[14px] font-bold text-white tabular"
                                     >
                                         <PiTicket className="h-4 w-4" aria-hidden />
                                         {padTicket(n, raffle.totalTickets)}
@@ -188,8 +189,8 @@ const RaffleDetailPage = () => {
                 <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
                     <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-line bg-surface-2" /> Disponible</span>
                     <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-raffle" /> Seleccionado</span>
-                    <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-raffle bg-raffle/20" /> Tuyo</span>
-                    <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-surface-3/60" /> Vendido</span>
+                    <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-raffle bg-raffle-soft" /> Tuyo</span>
+                    <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-surface-3" /> Vendido</span>
                 </div>
 
                 <div className="grid grid-cols-10 gap-1.5 md:gap-2" role="group" aria-label="Números de la rifa">
@@ -207,12 +208,12 @@ const RaffleDetailPage = () => {
                                 aria-label={`Número ${padTicket(n, raffle.totalTickets)}${isTaken ? ', vendido' : isMine ? ', tuyo' : ''}`}
                                 className={`relative flex aspect-square items-center justify-center rounded-lg text-[12px] font-semibold tabular transition md:text-sm ${
                                     isSelected
-                                        ? 'scale-[1.04] bg-raffle text-white shadow-[0_6px_16px_-6px_rgb(var(--raffle)/0.8)] [[data-theme=dark]_&]:text-[#140b33]'
+                                        ? 'scale-[1.04] bg-raffle text-white'
                                         : isMine
-                                          ? 'border border-raffle bg-raffle/20 text-raffle'
+                                          ? 'border border-raffle bg-raffle-soft text-raffle-ink'
                                           : isTaken
-                                            ? 'cursor-not-allowed bg-surface-3/50 text-subtle/60 line-through'
-                                            : 'border border-line bg-surface-2 text-fg hover:border-raffle/60 hover:text-raffle'
+                                            ? 'cursor-not-allowed bg-surface-3 text-subtle line-through'
+                                            : 'border border-line bg-surface-2 text-fg hover:border-raffle-line hover:text-raffle-ink'
                                 }`}
                             >
                                 {padTicket(n, raffle.totalTickets)}
@@ -221,7 +222,7 @@ const RaffleDetailPage = () => {
                         );
                     })}
                 </div>
-                {error && <p className="mt-3 text-[13px] text-danger" role="alert">{error}</p>}
+                {error && <p className="mt-3 text-[13px] text-danger-ink" role="alert">{error}</p>}
             </section>
 
             <StickyActionBar>
@@ -229,8 +230,8 @@ const RaffleDetailPage = () => {
                     <p className="text-xs text-subtle">
                         {selected.length ? `${selected.length} ${selected.length === 1 ? 'boleto' : 'boletos'}` : 'Elige al menos un número'}
                     </p>
-                    <CoinAmount amount={total} suffix className={`text-lg font-bold ${insufficient ? 'text-danger' : 'text-fg'}`} />
-                    {insufficient && <p className="text-[11px] text-danger">Saldo: {formatNumber(balance)} UC</p>}
+                    <CoinAmount amount={total} suffix className={`text-lg font-bold ${insufficient ? 'text-danger-ink' : 'text-fg'}`} />
+                    {insufficient && <p className="text-[11px] text-danger-ink">Saldo: {formatNumber(balance)} UC</p>}
                 </div>
                 {insufficient ? (
                     <ButtonLink to="/billetera/recargar" variant="coin" size="lg">

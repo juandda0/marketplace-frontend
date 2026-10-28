@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { PiArrowRight, PiFireFill, PiMagnifyingGlass, PiSparkleFill, PiStorefront, PiTicketFill } from 'react-icons/pi';
+import { PiArrowRight, PiMagnifyingGlass, PiSparkleFill } from 'react-icons/pi';
+import Emoji from '../../../core/ui/Emoji';
 import { useAsync } from '../../../core/hooks/useAsync';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useWallet } from '../../wallet/context/useWallet';
@@ -109,7 +110,7 @@ const HomePage = () => {
                     title="Destacados en el campus"
                     subtitle="Lo más pedido esta semana"
                     to="/catalogo"
-                    icon={<PiFireFill className="h-5 w-5 text-auction" aria-hidden />}
+                    icon={<Emoji name="fire" className="h-5 w-5" />}
                 />
                 {featured.data ? <ProductGrid products={featured.data.slice(0, 8)} /> : <ProductGridSkeleton count={4} />}
             </section>
@@ -120,7 +121,7 @@ const HomePage = () => {
                     title="Rifas activas"
                     subtitle="Apoya causas estudiantiles y gana premios"
                     to="/rifas"
-                    icon={<PiTicketFill className="h-5 w-5 text-raffle" aria-hidden />}
+                    icon={<Emoji name="ticket" className="h-5 w-5" />}
                 />
                 {raffles.loading ? (
                     <RailSkeleton width="w-[260px]" height="h-[230px]" />
@@ -139,24 +140,17 @@ const HomePage = () => {
             <section>
                 <Link
                     to="/billetera"
-                    className="relative isolate flex items-center gap-4 overflow-hidden rounded-3xl border border-coin/25 p-5 transition hover:border-coin/40"
+                    className="flex items-center gap-4 rounded-3xl border border-coin-line bg-coin-soft p-5 transition-colors hover:border-coin"
                 >
-                    <div
-                        className="absolute inset-0 -z-10"
-                        style={{
-                            background:
-                                'radial-gradient(100% 140% at 100% 0%, rgb(var(--coin) / 0.28), transparent 60%), linear-gradient(135deg, rgb(var(--surface-2)), rgb(var(--surface)))',
-                        }}
-                    />
-                    <UnicoinIcon className="h-14 w-14 drop-shadow-[0_10px_20px_rgba(246,188,66,0.35)]" />
+                    <UnicoinIcon className="h-14 w-14" />
                     <div className="min-w-0 flex-1">
                         <p className="text-[13px] text-muted">Tu saldo UNICOIN</p>
                         <p className="text-2xl font-bold tracking-tight text-fg tabular">
-                            {formatNumber(balance)} <span className="text-sm font-semibold text-coin">UC</span>
+                            {formatNumber(balance)} <span className="text-sm font-semibold text-coin-ink">UC</span>
                         </p>
                         <p className="text-xs text-subtle">≈ {formatCOP(unicoinToCop(balance))} COP · úsalo en subastas, rifas y tiendas</p>
                     </div>
-                    <PiArrowRight className="h-5 w-5 shrink-0 text-coin" aria-hidden />
+                    <PiArrowRight className="h-5 w-5 shrink-0 text-coin-ink" aria-hidden />
                 </Link>
             </section>
 
@@ -165,7 +159,7 @@ const HomePage = () => {
                 <SectionHeader
                     title="Tiendas de la U"
                     subtitle="Emprendimientos de estudiantes verificados"
-                    icon={<PiStorefront className="h-5 w-5 text-primary" aria-hidden />}
+                    icon={<Emoji name="convenience-store" className="h-5 w-5" />}
                 />
                 {stores.loading ? (
                     <RailSkeleton width="w-[248px]" height="h-[110px]" />
@@ -181,7 +175,7 @@ const HomePage = () => {
             </section>
 
             <p className="flex items-center justify-center gap-1.5 pb-2 text-center text-xs text-subtle">
-                <PiSparkleFill className="h-3.5 w-3.5 text-primary" aria-hidden />
+                <PiSparkleFill className="h-3.5 w-3.5 text-primary-ink" aria-hidden />
                 Hecho por y para estudiantes de la Universidad de Córdoba
             </p>
         </div>

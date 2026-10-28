@@ -9,7 +9,7 @@ import ProductGrid from '../components/ProductGrid';
 import { ProductGridSkeleton } from '../../../core/ui/Skeleton';
 import EmptyState from '../../../core/ui/EmptyState';
 import Button from '../../../core/ui/Button';
-import { visualIcons } from '../../../core/ui/visualIcons';
+import Emoji from '../../../core/ui/Emoji';
 import { pluralize } from '../../../core/utils/format';
 
 const sortOptions: { value: NonNullable<ProductFilters['sort']>; label: string }[] = [
@@ -57,7 +57,7 @@ const CatalogPage = () => {
             </div>
 
             {/* Buscador + filtros (fijos al hacer scroll) */}
-            <div className="sticky top-14 z-20 -mx-4 space-y-3 border-b border-line/60 bg-bg/90 px-4 pb-3 pt-1 backdrop-blur-xl md:top-16 md:mx-0 md:rounded-b-2xl md:px-0">
+            <div className="sticky top-14 z-20 -mx-4 space-y-3 border-b border-line bg-bg px-4 pb-3 pt-1 md:top-16 md:mx-0 md:rounded-b-2xl md:px-0">
                 <div className="flex gap-2">
                     <div className="relative flex-1">
                         <PiMagnifyingGlass className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-subtle" aria-hidden />
@@ -86,7 +86,7 @@ const CatalogPage = () => {
                         <select
                             value={sort}
                             onChange={(e) => update({ orden: e.target.value === 'relevancia' ? null : e.target.value })}
-                            className="input w-12 cursor-pointer appearance-none pl-11 pr-0 text-transparent sm:w-48 sm:pr-4 sm:text-fg"
+                            className="input w-12 cursor-pointer appearance-none pl-11 pr-0 text-[0px] sm:w-48 sm:pr-4 sm:text-[15px]"
                         >
                             {sortOptions.map((o) => (
                                 <option key={o.value} value={o.value} className="text-fg">
@@ -107,7 +107,6 @@ const CatalogPage = () => {
                         Todo
                     </button>
                     {categories.map((c) => {
-                        const Icon = visualIcons[c.icon];
                         const active = c.slug === category;
                         return (
                             <button
@@ -118,7 +117,7 @@ const CatalogPage = () => {
                                 onClick={() => update({ categoria: active ? null : c.slug })}
                                 className={`chip ${active ? 'chip-active' : ''}`}
                             >
-                                <Icon className="h-4 w-4" style={{ color: active ? undefined : c.color }} aria-hidden />
+                                <Emoji name={c.icon} className="h-[18px] w-[18px]" />
                                 {c.name}
                             </button>
                         );
@@ -135,10 +134,10 @@ const CatalogPage = () => {
                 {loading && !products ? (
                     <ProductGridSkeleton count={6} />
                 ) : products && products.length > 0 ? (
-                    <ProductGrid products={products} className={loading ? 'opacity-60 transition-opacity' : ''} />
+                    <ProductGrid products={products} />
                 ) : (
                     <EmptyState
-                        icon={<PiMagnifyingGlass aria-hidden />}
+                        icon={<Emoji name="magnifying-glass-tilted-left" />}
                         title="No encontramos nada"
                         description={query ? `No hay resultados para “${query}”. Prueba con otra palabra o quita los filtros.` : 'No hay productos en esta categoría todavía.'}
                         action={

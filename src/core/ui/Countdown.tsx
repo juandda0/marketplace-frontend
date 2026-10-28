@@ -26,12 +26,12 @@ export const CountdownBlocks = ({ endsAt, tone = 'auction' }: { endsAt: number; 
                         className={`flex min-w-[52px] flex-col items-center rounded-xl border px-2 py-1.5 ${
                             urgent
                                 ? tone === 'auction'
-                                    ? 'border-auction/40 bg-auction/10'
-                                    : 'border-raffle/40 bg-raffle/10'
+                                    ? 'border-auction-line bg-auction-soft'
+                                    : 'border-raffle-line bg-raffle-soft'
                                 : 'border-line bg-surface-2'
                         }`}
                     >
-                        <span className={`text-xl font-bold tabular leading-tight ${urgent ? (tone === 'auction' ? 'text-auction' : 'text-raffle') : 'text-fg'}`}>
+                        <span className={`text-xl font-bold tabular leading-tight ${urgent ? (tone === 'auction' ? 'text-auction-ink' : 'text-raffle-ink') : 'text-fg'}`}>
                             {b.value.toString().padStart(2, '0')}
                         </span>
                         <span className="text-[10px] font-medium uppercase tracking-wider text-subtle">{b.label}</span>

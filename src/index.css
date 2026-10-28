@@ -3,51 +3,112 @@
 @tailwind utilities;
 
 /*
- * Design tokens (RGB channels so Tailwind opacity modifiers work).
- * Dark is the default theme; light is opt-in via [data-theme="light"].
+ * Tokens de diseño: solo colores sólidos (sin transparencias ni degradados).
+ * Oscuro es el tema por defecto; el claro se activa con [data-theme="light"].
+ *   <tono>       relleno sólido (botones, insignias llenas)
+ *   <tono>-fg    texto sobre el relleno
+ *   <tono>-ink   texto/ícono del tono sobre el fondo de la app
+ *   <tono>-soft  superficie teñida (fondos de chips, avisos)
+ *   <tono>-line  borde teñido
  */
 @layer base {
   :root,
   [data-theme='dark'] {
     color-scheme: dark;
-    --bg: 8 11 10;
-    --surface: 16 21 19;
-    --surface-2: 24 31 28;
-    --surface-3: 34 43 39;
-    --line: 39 49 45;
-    --fg: 236 242 238;
-    --muted: 163 176 170;
-    --subtle: 122 137 130;
-    --primary: 62 214 140;
-    --primary-strong: 34 184 112;
-    --primary-fg: 3 22 13;
-    --coin: 246 188 66;
-    --coin-fg: 38 24 0;
-    --auction: 255 128 92;
-    --raffle: 172 146 255;
-    --danger: 248 113 113;
-    --success: 62 214 140;
+    --bg: #0b0e13;
+    --surface: #131821;
+    --surface-2: #1a202b;
+    --surface-3: #252c38;
+    --line: #2a3241;
+    --fg: #e8edf5;
+    --muted: #a6b0c0;
+    --subtle: #808b9d;
+
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-fg: #ffffff;
+    --primary-ink: #6ea2f7;
+    --primary-soft: #16233d;
+    --primary-line: #234079;
+
+    --coin: #f59e0b;
+    --coin-fg: #1c1003;
+    --coin-ink: #f5ad3c;
+    --coin-soft: #2a2112;
+    --coin-line: #5a4114;
+
+    --auction: #c2410c;
+    --auction-fg: #ffffff;
+    --auction-ink: #f08a5a;
+    --auction-soft: #2c1a13;
+    --auction-line: #5c2d18;
+
+    --raffle: #6d28d9;
+    --raffle-fg: #ffffff;
+    --raffle-ink: #a98af0;
+    --raffle-soft: #211a35;
+    --raffle-line: #43307a;
+
+    --success: #15803d;
+    --success-fg: #ffffff;
+    --success-ink: #4cbb74;
+    --success-soft: #13261b;
+    --success-line: #1f4a2e;
+
+    --danger: #dc2626;
+    --danger-fg: #ffffff;
+    --danger-ink: #f07575;
+    --danger-soft: #2c1517;
+    --danger-line: #5e2227;
   }
 
   [data-theme='light'] {
     color-scheme: light;
-    --bg: 245 247 246;
-    --surface: 255 255 255;
-    --surface-2: 239 243 241;
-    --surface-3: 228 234 231;
-    --line: 220 227 223;
-    --fg: 13 20 17;
-    --muted: 72 86 80;
-    --subtle: 102 116 110;
-    --primary: 8 138 80;
-    --primary-strong: 6 112 65;
-    --primary-fg: 255 255 255;
-    --coin: 176 116 6;
-    --coin-fg: 255 255 255;
-    --auction: 214 74 40;
-    --raffle: 112 80 224;
-    --danger: 205 45 45;
-    --success: 8 138 80;
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --surface-2: #eef1f6;
+    --surface-3: #e2e7ef;
+    --line: #dce2ea;
+    --fg: #0f172a;
+    --muted: #475569;
+    --subtle: #64748b;
+
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-fg: #ffffff;
+    --primary-ink: #1d4ed8;
+    --primary-soft: #e3ecfd;
+    --primary-line: #bfd3fa;
+
+    --coin: #f59e0b;
+    --coin-fg: #1c1003;
+    --coin-ink: #b45309;
+    --coin-soft: #fef3c7;
+    --coin-line: #fcd9a0;
+
+    --auction: #c2410c;
+    --auction-fg: #ffffff;
+    --auction-ink: #c2410c;
+    --auction-soft: #ffedd5;
+    --auction-line: #fdba8c;
+
+    --raffle: #6d28d9;
+    --raffle-fg: #ffffff;
+    --raffle-ink: #6d28d9;
+    --raffle-soft: #ede9fe;
+    --raffle-line: #c4b5fd;
+
+    --success: #15803d;
+    --success-fg: #ffffff;
+    --success-ink: #15803d;
+    --success-soft: #dcfce7;
+    --success-line: #86efac;
+
+    --danger: #dc2626;
+    --danger-fg: #ffffff;
+    --danger-ink: #dc2626;
+    --danger-soft: #fee2e2;
+    --danger-line: #fca5a5;
   }
 
   html {
@@ -60,11 +121,12 @@
   }
 
   ::selection {
-    background: rgb(var(--primary) / 0.3);
+    background: var(--primary);
+    color: var(--primary-fg);
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--primary));
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
 
@@ -80,11 +142,11 @@
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-line/70 bg-surface shadow-card;
+    @apply rounded-2xl border border-line bg-surface;
   }
 
   .input {
-    @apply h-12 w-full rounded-xl border border-line bg-surface-2 px-4 text-[15px] text-fg transition-colors placeholder:text-subtle focus:border-primary/70 focus:outline-none focus:ring-4 focus:ring-primary/15;
+    @apply h-12 w-full rounded-xl border border-line bg-surface-2 px-4 text-[15px] text-fg transition-colors placeholder:text-subtle focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;
   }
 
   .label {
@@ -96,18 +158,25 @@
   }
 
   .chip-active {
-    @apply border-primary/50 bg-primary/15 text-primary hover:text-primary;
+    @apply border-primary bg-primary text-primary-fg hover:text-primary-fg;
   }
 
   .skeleton {
-    background: linear-gradient(
-      90deg,
-      rgb(var(--surface-2)) 0%,
-      rgb(var(--surface-3)) 50%,
-      rgb(var(--surface-2)) 100%
-    );
-    background-size: 200% 100%;
-    @apply animate-shimmer rounded-xl;
+    @apply animate-skeleton rounded-xl bg-surface-2;
+  }
+
+  /* Baldosa sólida para el arte de productos sin foto (color por tema). */
+  .visual-tile {
+    background-color: var(--tile-light);
+  }
+  .visual-tile-accent {
+    background-color: var(--tile-light-accent);
+  }
+  [data-theme='dark'] .visual-tile {
+    background-color: var(--tile-dark);
+  }
+  [data-theme='dark'] .visual-tile-accent {
+    background-color: var(--tile-dark-accent);
   }
 }
 

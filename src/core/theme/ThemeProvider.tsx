@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#080b0a' : '#f5f7f6');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0b0e13' : '#f4f6fa');
         try {
             localStorage.setItem(THEME_KEY, theme);
         } catch {

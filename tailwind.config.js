@@ -1,5 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+// Colores sólidos definidos en src/index.css (sin transparencias ni degradados).
+const token = (name) => `var(--${name})`;
+const tone = (name) => ({
+  DEFAULT: token(name),
+  fg: token(`${name}-fg`),
+  ink: token(`${name}-ink`),
+  soft: token(`${name}-soft`),
+  line: token(`${name}-line`),
+});
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -16,19 +24,16 @@ export default {
         fg: token('fg'),
         muted: token('muted'),
         subtle: token('subtle'),
-        primary: {
-          DEFAULT: token('primary'),
-          fg: token('primary-fg'),
-          strong: token('primary-strong'),
+        primary: { ...tone('primary'), hover: token('primary-hover') },
+        coin: tone('coin'),
+        auction: tone('auction'),
+        raffle: tone('raffle'),
+        success: tone('success'),
+        danger: tone('danger'),
+        ink: {
+          DEFAULT: '#0F172A',
+          2: '#1E293B',
         },
-        coin: {
-          DEFAULT: token('coin'),
-          fg: token('coin-fg'),
-        },
-        auction: token('auction'),
-        raffle: token('raffle'),
-        danger: token('danger'),
-        success: token('success'),
       },
       fontFamily: {
         sans: [
@@ -47,28 +52,18 @@ export default {
       borderRadius: {
         '4xl': '2rem',
       },
-      boxShadow: {
-        card: '0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 10px 30px -18px rgb(0 0 0 / 0.6)',
-        float: '0 18px 40px -16px rgb(0 0 0 / 0.55)',
-        glow: '0 10px 30px -10px rgb(var(--primary) / 0.55)',
-        coin: '0 10px 30px -12px rgb(var(--coin) / 0.6)',
-      },
       keyframes: {
-        'fade-in': {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
-        },
         'fade-up': {
-          from: { opacity: '0', transform: 'translateY(6px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+          from: { transform: 'translateY(6px)' },
+          to: { transform: 'translateY(0)' },
         },
-        shimmer: {
-          from: { backgroundPosition: '200% 0' },
-          to: { backgroundPosition: '-200% 0' },
+        skeleton: {
+          '0%, 100%': { backgroundColor: 'var(--surface-2)' },
+          '50%': { backgroundColor: 'var(--surface-3)' },
         },
         'toast-in': {
-          from: { opacity: '0', transform: 'translateY(12px) scale(0.98)' },
-          to: { opacity: '1', transform: 'translateY(0) scale(1)' },
+          from: { transform: 'translateY(-8px)' },
+          to: { transform: 'translateY(0)' },
         },
         pop: {
           '0%': { transform: 'scale(0.85)' },
@@ -77,10 +72,9 @@ export default {
         },
       },
       animation: {
-        'fade-in': 'fade-in 220ms ease-out both',
-        'fade-up': 'fade-up 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
-        shimmer: 'shimmer 1.6s linear infinite',
-        'toast-in': 'toast-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        'fade-up': 'fade-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        skeleton: 'skeleton 1.4s ease-in-out infinite',
+        'toast-in': 'toast-in 200ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
         pop: 'pop 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
       },
     },

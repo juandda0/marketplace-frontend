@@ -7,7 +7,7 @@ const BottomTabBar = () => {
     return (
         <nav
             aria-label="Navegación principal"
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-line/80 bg-bg/85 pb-safe backdrop-blur-xl md:hidden"
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface pb-safe md:hidden"
         >
             <ul className="mx-auto grid h-16 max-w-md grid-cols-5">
                 {tabs.map((tab) => {
@@ -19,7 +19,7 @@ const BottomTabBar = () => {
                                 to={tab.to}
                                 aria-current={active ? 'page' : undefined}
                                 className={`relative flex h-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors ${
-                                    active ? 'text-primary' : 'text-subtle hover:text-muted'
+                                    active ? 'text-primary-ink' : 'text-subtle hover:text-muted'
                                 }`}
                             >
                                 {active && <span className="absolute top-0 h-0.5 w-8 rounded-full bg-primary" aria-hidden />}

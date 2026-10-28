@@ -20,7 +20,7 @@ const SectionHeader = ({ title, subtitle, to, linkLabel = 'Ver todo', icon }: Se
             {subtitle && <p className="mt-0.5 text-[13px] text-muted">{subtitle}</p>}
         </div>
         {to && (
-            <Link to={to} className="flex shrink-0 items-center gap-0.5 text-[13px] font-medium text-primary hover:underline">
+            <Link to={to} className="flex shrink-0 items-center gap-0.5 text-[13px] font-medium text-primary-ink hover:underline">
                 {linkLabel}
                 <PiCaretRight className="h-3.5 w-3.5" aria-hidden />
             </Link>

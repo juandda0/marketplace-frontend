@@ -36,10 +36,10 @@ const BalanceChip = () => {
     return (
         <Link
             to="/billetera"
-            className="flex h-9 items-center rounded-full border border-coin/25 bg-coin/10 px-3 text-[13px] font-semibold text-coin transition hover:bg-coin/15"
+            className="flex h-9 items-center rounded-full border border-coin-line bg-coin-soft px-3 text-[13px] font-semibold text-coin-ink transition hover:bg-coin-soft"
             aria-label="Saldo UNICOIN"
         >
-            {loading ? <span className="h-3 w-12 animate-pulse rounded bg-coin/20" /> : <CoinAmount amount={balance} />}
+            {loading ? <span className="skeleton h-3 w-12 rounded" /> : <CoinAmount amount={balance} />}
         </Link>
     );
 };
@@ -59,7 +59,7 @@ const DesktopSearch = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar en Unimarket"
                 aria-label="Buscar productos"
-                className="h-10 w-full rounded-full border border-line bg-surface-2 pl-10 pr-4 text-sm text-fg placeholder:text-subtle focus:border-primary/60 focus:outline-none focus:ring-4 focus:ring-primary/15"
+                className="h-10 w-full rounded-full border border-line bg-surface-2 pl-10 pr-4 text-sm text-fg placeholder:text-subtle focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
         </form>
     );
@@ -78,7 +78,7 @@ const TopBar = () => {
     };
 
     return (
-        <header className="sticky top-0 z-30 border-b border-line/60 bg-bg/80 backdrop-blur-xl">
+        <header className="sticky top-0 z-30 border-b border-line bg-bg">
             {/* Móvil */}
             <div className="flex h-14 items-center gap-2 px-4 md:hidden">
                 {root ? (
@@ -139,7 +139,7 @@ const TopBar = () => {
 };
 
 const Footer = () => (
-    <footer className="mt-16 hidden border-t border-line/60 md:block">
+    <footer className="mt-16 hidden border-t border-line md:block">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-8 text-[13px] text-subtle">
             <div className="flex items-center gap-3">
                 <Logo compact />

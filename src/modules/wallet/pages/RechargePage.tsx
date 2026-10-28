@@ -8,14 +8,15 @@ import type { RechargeMethod } from '../types';
 import Button, { ButtonLink } from '../../../core/ui/Button';
 import StickyActionBar from '../../../core/ui/StickyActionBar';
 import { CoinAmount, UnicoinIcon } from '../../../core/ui/Unicoin';
+import Emoji from '../../../core/ui/Emoji';
 import { errorMessage } from '../../../lib/mockDb';
 import { formatCOP, formatNumber, unicoinToCop } from '../../../core/utils/format';
 
 const methods: { value: RechargeMethod; icon: IconType; detail: string; color: string }[] = [
-    { value: 'nequi', icon: PiDeviceMobile, detail: 'Pago inmediato desde tu celular', color: '#E6007E' },
-    { value: 'daviplata', icon: PiDeviceMobile, detail: 'Pago inmediato desde tu celular', color: '#ED1C24' },
-    { value: 'pse', icon: PiBank, detail: 'Débito desde tu cuenta bancaria', color: '#38BDF8' },
-    { value: 'efectivo', icon: PiMoney, detail: 'Bienestar Universitario, lun a vie', color: '#3ED68C' },
+    { value: 'nequi', icon: PiDeviceMobile, detail: 'Pago inmediato desde tu celular', color: '#BE185D' },
+    { value: 'daviplata', icon: PiDeviceMobile, detail: 'Pago inmediato desde tu celular', color: '#B91C1C' },
+    { value: 'pse', icon: PiBank, detail: 'Débito desde tu cuenta bancaria', color: '#2563EB' },
+    { value: 'efectivo', icon: PiMoney, detail: 'Bienestar Universitario, lun a vie', color: '#15803D' },
 ];
 
 const RechargePage = () => {
@@ -46,16 +47,16 @@ const RechargePage = () => {
     if (result) {
         return (
             <div className="mx-auto flex max-w-md flex-col items-center pt-8 text-center">
-                <div className="relative">
-                    <div className="absolute inset-0 animate-ping rounded-full bg-coin/20" />
-                    <UnicoinIcon className="relative h-24 w-24 animate-pop drop-shadow-[0_16px_30px_rgba(246,188,66,0.45)]" />
+                <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-coin-soft">
+                    <Emoji name="party-popper" className="absolute -right-2 -top-1 h-10 w-10" />
+                    <UnicoinIcon className="relative h-20 w-20 animate-pop" />
                 </div>
                 <h1 className="mt-6 text-2xl font-bold tracking-tight">¡Recarga exitosa!</h1>
                 <p className="mt-1 text-[14px] text-muted">
-                    Agregamos <span className="font-semibold text-coin">{formatNumber(result.amount + result.bonus)} UC</span> a tu billetera
+                    Agregamos <span className="font-semibold text-coin-ink">{formatNumber(result.amount + result.bonus)} UC</span> a tu billetera
                     {result.bonus > 0 && ` (incluye ${formatNumber(result.bonus)} UC de bono)`}.
                 </p>
-                <div className="card mt-6 w-full divide-y divide-line/70 text-left text-[14px]">
+                <div className="card mt-6 w-full divide-y divide-line text-left text-[14px]">
                     <div className="flex justify-between p-3.5">
                         <span className="text-muted">Pagaste</span>
                         <span className="font-semibold tabular">{formatCOP(unicoinToCop(result.amount))}</span>
@@ -66,7 +67,7 @@ const RechargePage = () => {
                     </div>
                     <div className="flex justify-between p-3.5">
                         <span className="text-muted">Nuevo saldo</span>
-                        <CoinAmount amount={result.balance} suffix className="font-bold text-coin" />
+                        <CoinAmount amount={result.balance} suffix className="font-bold text-coin-ink" />
                     </div>
                 </div>
                 <div className="mt-6 grid w-full gap-2">
@@ -91,7 +92,7 @@ const RechargePage = () => {
                 </div>
                 <div className="text-right">
                     <p className="text-[11px] text-subtle">Saldo actual</p>
-                    <CoinAmount amount={balance} className="text-[15px] font-semibold text-coin" />
+                    <CoinAmount amount={balance} className="text-[15px] font-semibold text-coin-ink" />
                 </div>
             </div>
 
@@ -111,7 +112,7 @@ const RechargePage = () => {
                                 }}
                                 aria-pressed={active}
                                 className={`relative rounded-2xl border p-3 text-left transition ${
-                                    active ? 'border-coin bg-coin/10 ring-4 ring-coin/10' : 'border-line bg-surface hover:border-coin/40'
+                                    active ? 'border-coin bg-coin-soft ring-4 ring-coin-line' : 'border-line bg-surface hover:border-coin-line'
                                 }`}
                             >
                                 {value >= RECHARGE_BONUS_FROM && (
@@ -158,10 +159,10 @@ const RechargePage = () => {
                                 aria-checked={active}
                                 onClick={() => setMethod(value)}
                                 className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition ${
-                                    active ? 'border-primary/60 bg-primary/[0.07]' : 'border-line bg-surface hover:border-line'
+                                    active ? 'border-primary bg-primary-soft' : 'border-line bg-surface'
                                 }`}
                             >
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: `${color}22`, color }}>
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: color, color: '#FFFFFF' }}>
                                     <Icon className="h-5 w-5" aria-hidden />
                                 </span>
                                 <span className="min-w-0 flex-1">
@@ -182,7 +183,7 @@ const RechargePage = () => {
             </section>
 
             {/* Resumen */}
-            <section className="card mt-6 divide-y divide-line/70 text-[14px]">
+            <section className="card mt-6 divide-y divide-line text-[14px]">
                 <div className="flex justify-between p-3.5">
                     <span className="text-muted">Recibes</span>
                     <CoinAmount amount={amount} suffix className="font-semibold" />
@@ -190,9 +191,9 @@ const RechargePage = () => {
                 {bonus > 0 && (
                     <div className="flex justify-between p-3.5">
                         <span className="flex items-center gap-1.5 text-muted">
-                            <PiGift className="h-4 w-4 text-coin" aria-hidden /> Bono por recarga
+                            <PiGift className="h-4 w-4 text-coin-ink" aria-hidden /> Bono por recarga
                         </span>
-                        <span className="font-semibold text-coin">+{formatNumber(bonus)} UC</span>
+                        <span className="font-semibold text-coin-ink">+{formatNumber(bonus)} UC</span>
                     </div>
                 )}
                 <div className="flex justify-between p-3.5">
@@ -202,10 +203,10 @@ const RechargePage = () => {
             </section>
 
             <p className="mt-3 flex items-center gap-1.5 text-xs text-subtle">
-                <PiShieldCheck className="h-4 w-4 text-primary" aria-hidden />
+                <PiShieldCheck className="h-4 w-4 text-primary-ink" aria-hidden />
                 Modo demo: no se realiza ningún cobro real.
             </p>
-            {error && <p className="mt-3 text-[13px] text-danger" role="alert">{error}</p>}
+            {error && <p className="mt-3 text-[13px] text-danger-ink" role="alert">{error}</p>}
 
             <StickyActionBar>
                 <Button variant="coin" size="lg" block onClick={pay} loading={submitting} disabled={amount < 50}>

@@ -5,13 +5,13 @@ import { CoinAmount } from '../../../core/ui/Unicoin';
 import { formatRelative } from '../../../core/utils/format';
 
 const typeStyles: Record<TransactionType, { icon: IconType; className: string }> = {
-    recharge: { icon: PiArrowDownLeft, className: 'bg-primary/15 text-primary' },
-    sale: { icon: PiStorefront, className: 'bg-primary/15 text-primary' },
-    reward: { icon: PiGift, className: 'bg-coin/15 text-coin' },
+    recharge: { icon: PiArrowDownLeft, className: 'bg-success-soft text-success-ink' },
+    sale: { icon: PiStorefront, className: 'bg-success-soft text-success-ink' },
+    reward: { icon: PiGift, className: 'bg-coin-soft text-coin-ink' },
     refund: { icon: PiArrowsClockwise, className: 'bg-surface-3 text-muted' },
     purchase: { icon: PiShoppingBagOpen, className: 'bg-surface-3 text-fg' },
-    bid: { icon: PiGavel, className: 'bg-auction/15 text-auction' },
-    raffle: { icon: PiTicket, className: 'bg-raffle/15 text-raffle' },
+    bid: { icon: PiGavel, className: 'bg-auction-soft text-auction-ink' },
+    raffle: { icon: PiTicket, className: 'bg-raffle-soft text-raffle-ink' },
 };
 
 const TransactionItem = ({ tx }: { tx: WalletTransaction }) => {
@@ -31,7 +31,7 @@ const TransactionItem = ({ tx }: { tx: WalletTransaction }) => {
                     signed
                     suffix
                     iconClassName="hidden"
-                    className={`text-[14px] font-semibold ${tx.amount > 0 ? 'text-primary' : 'text-fg'}`}
+                    className={`text-[14px] font-semibold ${tx.amount > 0 ? 'text-success-ink' : 'text-fg'}`}
                 />
                 <span className="text-[11px] text-subtle">{formatRelative(tx.createdAt)}</span>
             </div>
